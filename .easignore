@@ -1,0 +1,49 @@
+# Files excluded from EAS Build uploads. Must live at the repository root
+# (next to .git) — EAS archives the whole repo in monorepo setups.
+
+# everything outside the Expo app is irrelevant for mobile builds
+design-prototype/
+docs/
+esp32-firmware/
+
+# dependencies (restored by npm install on the build worker)
+node_modules/
+
+# generated native folders (CNG — prebuild runs on the build worker)
+app/android/
+app/ios/
+.kotlin/
+
+# build & cache output
+.expo/
+dist/
+web-build/
+.metro-health-check*
+*.tsbuildinfo
+expo-env.d.ts
+
+# secrets & credentials — never upload
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+.env*.local
+
+# editor / tooling / local junk
+.vscode/
+.claude/
+.idea/
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+.DS_Store
+*.orig.*
+
+# docs not needed for the build
+README.md
+CLAUDE.md
+AGENTS.md
