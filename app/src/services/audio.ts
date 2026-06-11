@@ -49,6 +49,13 @@ class AudioService {
     this.statusSub?.remove();
     this.statusSub = null;
     if (this.player) {
+      // remove() only releases the JS object — without pause() the native
+      // player keeps playing in the background
+      try {
+        this.player.pause();
+      } catch {
+        // player may already be released natively
+      }
       try {
         this.player.remove();
       } catch {
