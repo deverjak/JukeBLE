@@ -54,8 +54,10 @@ src/
 
 ## Poznámky
 
-- V dev buildu je na hlavní obrazovce **simulátor čtečky** (`__DEV__` only) — celý
-  registrační i přehrávací flow lze testovat bez ESP32.
+- Přepínač módu (registrace / přehrávání) je na záložce **Karty**; opuštění záložky
+  v módu registrace vyžaduje potvrzení a přepne mód zpět na přehrávání.
+- V dev buildu je na obrazovkách Domů a Karty **simulátor čtečky** (`__DEV__` only) —
+  celý registrační i přehrávací flow lze testovat bez ESP32.
 - Android 12+: runtime permissions `BLUETOOTH_SCAN` (s `neverForLocation`) a
   `BLUETOOTH_CONNECT`; Android ≤ 11: `ACCESS_FINE_LOCATION`. Řeší `services/ble.ts`.
 - Zvuky se ukládají s relativní cestou (iOS mění absolutní URI při updatu).

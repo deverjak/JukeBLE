@@ -7,7 +7,6 @@ import { NowPlayingCard } from '../../components/NowPlayingCard';
 import { Simulator } from '../../components/Simulator';
 import { TapPrompt } from '../../components/TapPrompt';
 import { LiveDot } from '../../components/ui/anim';
-import { Seg } from '../../components/ui/Seg';
 import { Card, ConsoleRow, ConsoleValue, SectionLabel, monoText } from '../../components/ui/primitives';
 import { useJukebox } from '../../state/JukeboxContext';
 import { useTheme } from '../../theme/ThemeContext';
@@ -24,7 +23,7 @@ const BLE_STATUS_TEXT: Record<ConnectionStatus, string> = {
 
 export default function HomeScreen() {
   const { tokens } = useTheme();
-  const { mode, setMode, connection, nowPlaying, lastUid } = useJukebox();
+  const { mode, connection, nowPlaying, lastUid } = useJukebox();
 
   const status = connection.status;
   const connected = status === 'connected';
@@ -38,19 +37,6 @@ export default function HomeScreen() {
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingTop: 4, paddingHorizontal: 20, paddingBottom: 24, gap: 22 }}
         showsVerticalScrollIndicator={false}>
-        {/* Mode switch */}
-        <View>
-          <SectionLabel>Provozní mód</SectionLabel>
-          <Seg
-            value={mode}
-            onChange={setMode}
-            options={[
-              { value: 'registration', label: 'Registrace', icon: 'plus' },
-              { value: 'play', label: 'Přehrávání', icon: 'play', accent: true },
-            ]}
-          />
-        </View>
-
         {/* Status console */}
         <Card style={{ paddingVertical: 14, paddingHorizontal: 16 }}>
           <SectionLabel right={<Text style={[monoText(tokens.fg3, 10), { letterSpacing: 0.6 }]}>GATT · NOTIFY</Text>}>

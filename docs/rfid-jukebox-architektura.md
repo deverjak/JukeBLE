@@ -168,9 +168,10 @@ Na Androidu 12+ si runtime permissions (`BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`) v
 │ UI (screens)                                │
 │  • Párování (sken + výběr zařízení)         │
 │  • Knihovna zvuků (import, seznam, mazání)  │
-│  • Karty (seznam registrovaných, přejmen.)  │
-│  • Hlavní obrazovka (přepínač Reg/Play,     │
-│    stav připojení, "now playing")           │
+│  • Karty (přepínač Reg/Play, seznam         │
+│    registrovaných, přejmenování)            │
+│  • Hlavní obrazovka (stav připojení,        │
+│    "now playing")                           │
 ├─────────────────────────────────────────────┤
 │ Mode router (globální stav)                 │
 │  appMode: 'registration' | 'play'           │

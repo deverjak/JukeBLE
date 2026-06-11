@@ -1,9 +1,11 @@
-import { router } from 'expo-router';
 import { ScrollView, Text, View } from 'react-native';
 
 import { AppHeader } from '../../components/AppHeader';
 import { Icon } from '../../components/Icon';
+import { Simulator } from '../../components/Simulator';
+import { TapPrompt } from '../../components/TapPrompt';
 import { Button } from '../../components/ui/Button';
+import { Seg } from '../../components/ui/Seg';
 import {
   Badge,
   Card,
@@ -20,33 +22,44 @@ import { fonts } from '../../theme/tokens';
 
 export default function CardsScreen() {
   const { tokens } = useTheme();
-  const { cards, sounds, setMode, openAssign, openRename, askDeleteCard } = useJukebox();
+  const { cards, sounds, mode, setMode, connection, openAssign, openRename, askDeleteCard } = useJukebox();
+  const connected = connection.status === 'connected';
 
   return (
     <View style={{ flex: 1, backgroundColor: tokens.bg0 }}>
       <AppHeader title="Karty" sub="MAPOVÁNÍ UID → ZVUK" />
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: 4, paddingHorizontal: 20, paddingBottom: 28 }}
+        contentContainerStyle={{ paddingTop: 4, paddingHorizontal: 20, paddingBottom: 28, gap: 22 }}
         showsVerticalScrollIndicator={false}>
-        {cards.length === 0 ? (
-          <EmptyState
-            icon="card"
-            title="Žádné karty"
-            body="Přepněte na hlavní obrazovce do režimu registrace a přiložte kartu ke čtečce."
-            action={
-              <Button
-                icon="plus"
-                label="Registrovat kartu"
-                onPress={() => {
-                  setMode('registration');
-                  router.navigate('/');
-                }}
-              />
-            }
+        {/* Mode switch */}
+        <View>
+          <SectionLabel>Provozní mód</SectionLabel>
+          <Seg
+            value={mode}
+            onChange={setMode}
+            options={[
+              { value: 'registration', label: 'Registrace', icon: 'plus' },
+              { value: 'play', label: 'Přehrávání', icon: 'play', accent: true },
+            ]}
           />
+        </View>
+
+        {mode === 'registration' && <TapPrompt connected={connected} mode="registration" />}
+
+        {cards.length === 0 ? (
+          mode === 'play' && (
+            <EmptyState
+              icon="card"
+              title="Žádné karty"
+              body="Přepněte výše do režimu registrace a přiložte kartu ke čtečce."
+              action={
+                <Button icon="plus" label="Registrovat kartu" onPress={() => setMode('registration')} />
+              }
+            />
+          )
         ) : (
-          <>
+          <View>
             <SectionLabel right={<Text style={monoText(tokens.fg3, 10)}>{cards.length} karet</Text>}>
               Registrované karty
             </SectionLabel>
@@ -119,8 +132,11 @@ export default function CardsScreen() {
                 );
               })}
             </Card>
-          </>
+          </View>
         )}
+
+        {/* DEV-only reader simulator */}
+        <Simulator />
       </ScrollView>
     </View>
   );

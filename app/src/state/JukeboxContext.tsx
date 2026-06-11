@@ -245,7 +245,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       const card = cardsRef.current.find((c) => c.uid === action.uid);
       if (action.kind === 'register') {
         setMode('registration');
-        router.navigate('/');
+        router.navigate('/cards');
         setAssign({ uid: action.uid, mode: 'new', currentName: '', currentSoundId: null });
       } else {
         router.navigate('/');
