@@ -1,0 +1,322 @@
+/* ─────────────────────────────────────────────────────────────
+   JukeBLE — app styles, built on Chytře.digital tokens
+   Dark-first with a tuned light inversion. Theme switches on
+   [data-theme] set on the .jb-screen root.
+   ───────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --tracking-caps: 0.08em;
+  --tracking-display: -0.02em;
+  --tracking-tight: -0.01em;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-base: 240ms;
+}
+
+/* ── Dark theme (default) ─────────────────────────────────── */
+.jb-screen {
+  --bg-0: #000000;
+  --bg-1: #0A0A0A;
+  --bg-2: #141414;
+  --bg-3: #1F1F1F;
+  --fg-0: #FFFFFF;
+  --fg-1: #CCCCCC;
+  --fg-2: #999999;
+  --fg-3: #666666;
+  --fg-4: #404040;
+  --line-1: rgba(255,255,255,0.10);
+  --line-2: rgba(255,255,255,0.20);
+  --line-3: rgba(255,255,255,0.06);
+  --accent: #00E676;
+  --accent-press: #00CC6A;
+  --accent-soft: #07301C;
+  --accent-ink: #00E676;
+  --warn: #F5A524;
+  --warn-soft: #2A2207;
+  --error: #FF5C5C;
+  --error-soft: #2A1414;
+  --halo: radial-gradient(circle at 50% 40%, rgba(0,230,118,0.16), transparent 62%);
+  --nav-blur: rgba(0,0,0,0.72);
+}
+
+/* ── Light theme (inversion) ──────────────────────────────── */
+.jb-screen[data-theme="light"] {
+  --bg-0: #FFFFFF;
+  --bg-1: #FBFBFA;
+  --bg-2: #F3F3F1;
+  --bg-3: #EAEAE7;
+  --fg-0: #0A0A0A;
+  --fg-1: #3A3A3A;
+  --fg-2: #6E6E6E;
+  --fg-3: #9A9A9A;
+  --fg-4: #C6C6C4;
+  --line-1: rgba(0,0,0,0.12);
+  --line-2: rgba(0,0,0,0.24);
+  --line-3: rgba(0,0,0,0.06);
+  --accent: #00C264;
+  --accent-press: #00A856;
+  --accent-soft: #E2F8EC;
+  --accent-ink: #009A52;
+  --warn: #C77800;
+  --warn-soft: #FBF1DD;
+  --error: #E03B3B;
+  --error-soft: #FBE6E6;
+  --halo: radial-gradient(circle at 50% 40%, rgba(0,194,100,0.10), transparent 62%);
+  --nav-blur: rgba(255,255,255,0.78);
+}
+
+* { box-sizing: border-box; }
+button { font-family: var(--font-sans); color: inherit; }
+
+html, body {
+  margin: 0;
+  background: #18191b;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Page (stage holding the device) ──────────────────────── */
+.jb-stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 40px 20px 56px;
+}
+.jb-stage-cap {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: #6a6d70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.jb-stage-cap b { color: #cfd2d4; font-weight: 500; }
+.jb-stage-cap .dot { width: 5px; height: 5px; border-radius: 50%; background: #00E676; }
+
+/* ── Screen root (inside device) ──────────────────────────── */
+.jb-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-0);
+  color: var(--fg-0);
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+}
+
+/* ── Typography helpers ───────────────────────────────────── */
+.jb-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.jb-mono { font-family: var(--font-mono); }
+.jb-h {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* ── Scroll area ──────────────────────────────────────────── */
+.jb-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.jb-body::-webkit-scrollbar { width: 0; height: 0; }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.jb-btn {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1;
+  padding: 13px 18px;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              transform 80ms var(--ease-out), opacity var(--dur-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+.jb-btn:active { transform: translateY(1px); }
+.jb-btn-primary { background: var(--accent); color: #000; }
+.jb-btn-primary:hover { background: var(--accent-press); }
+.jb-btn-secondary { background: transparent; color: var(--fg-0); border-color: var(--line-2); }
+.jb-btn-secondary:hover { border-color: var(--fg-2); }
+.jb-btn-ghost { background: transparent; color: var(--fg-1); }
+.jb-btn-ghost:hover { color: var(--fg-0); background: var(--bg-2); }
+.jb-btn-danger { background: transparent; color: var(--error); border-color: var(--line-1); }
+.jb-btn-danger:hover { background: var(--error-soft); border-color: var(--error); }
+.jb-btn-block { width: 100%; }
+.jb-btn[disabled] { background: var(--bg-3); color: var(--fg-3); cursor: not-allowed; border-color: transparent; }
+.jb-btn[disabled]:active { transform: none; }
+
+/* ── Icon button ──────────────────────────────────────────── */
+.jb-iconbtn {
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg-1);
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+.jb-iconbtn:hover { background: var(--bg-2); color: var(--fg-0); }
+.jb-iconbtn:active { transform: scale(0.94); }
+
+/* ── Card ─────────────────────────────────────────────────── */
+.jb-card {
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: 12px;
+}
+
+/* ── Inputs ───────────────────────────────────────────────── */
+.jb-input {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: 9px;
+  padding: 13px 14px;
+  color: var(--fg-0);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  outline: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.jb-input::placeholder { color: var(--fg-3); }
+.jb-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+
+/* ── Segmented control (mode switch) ──────────────────────── */
+.jb-seg {
+  display: flex;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+.jb-seg-opt {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--fg-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 11px 8px;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.jb-seg-opt.is-active { background: var(--bg-0); color: var(--fg-0); box-shadow: 0 0 0 1px var(--line-1); }
+.jb-seg-opt.is-active.is-play { color: var(--accent-ink); }
+
+/* ── Badge ────────────────────────────────────────────────── */
+.jb-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: var(--tracking-caps); text-transform: uppercase;
+  padding: 5px 9px; border-radius: 5px; border: 1px solid var(--line-1);
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+.jb-badge .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.jb-badge-ok { color: var(--accent-ink); border-color: color-mix(in srgb, var(--accent) 32%, transparent); background: var(--accent-soft); }
+.jb-badge-warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 30%, transparent); background: var(--warn-soft); }
+.jb-badge-err { color: var(--error); border-color: color-mix(in srgb, var(--error) 30%, transparent); background: var(--error-soft); }
+
+/* ── Console rows ─────────────────────────────────────────── */
+.jb-console-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid var(--line-3);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.jb-console-row:first-child { border-top: none; }
+.jb-console-row .k { color: var(--fg-2); letter-spacing: 0.02em; }
+.jb-console-row .v { color: var(--fg-0); display: flex; align-items: center; gap: 8px; }
+
+/* ── List rows ────────────────────────────────────────────── */
+.jb-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--line-3);
+  -webkit-tap-highlight-color: transparent;
+}
+.jb-row:first-child { border-top: none; }
+.jb-row-tap { cursor: pointer; transition: background var(--dur-fast); }
+.jb-row-tap:hover { background: var(--bg-2); }
+
+/* ── Pulsing live dot ─────────────────────────────────────── */
+@keyframes jb-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+.jb-live { animation: jb-pulse 1.6s var(--ease-out) infinite; }
+
+@keyframes jb-spin { to { transform: rotate(360deg); } }
+.jb-spin { animation: jb-spin 0.9s linear infinite; transform-origin: center; }
+
+/* radar rings for scanning */
+@keyframes jb-radar { 0% { transform: scale(0.5); opacity: 0.7; } 100% { transform: scale(2.4); opacity: 0; } }
+.jb-ring { animation: jb-radar 1.8s var(--ease-out) infinite; }
+
+/* slide-up for sheets/modals */
+/* gentle rise (not full-height slide) so a throttled iframe never
+   leaves the sheet parked off-screen */
+@keyframes jb-sheet-in { from { transform: translateY(22px); } to { transform: translateY(0); } }
+@keyframes jb-fade-in { from { background: rgba(0,0,0,0); } to { background: rgba(0,0,0,0.55); } }
+.jb-sheet { animation: jb-sheet-in var(--dur-base) var(--ease-out); }
+.jb-scrim { animation: jb-fade-in var(--dur-base) var(--ease-out); }
+
+/* toast */
+@keyframes jb-toast-in { from { transform: translateY(16px); } to { transform: translateY(0); } }
+.jb-toast { animation: jb-toast-in var(--dur-base) var(--ease-out); }
+
+/* now-playing equalizer bars */
+@keyframes jb-eq { 0%,100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+.jb-eqbar { transform-origin: bottom; animation: jb-eq 0.9s var(--ease-out) infinite; }
+
+/* card-tap flash */
+@keyframes jb-flash { 0% { opacity: 0; } 12% { opacity: 1; } 100% { opacity: 0; } }
+.jb-flash { animation: jb-flash 700ms var(--ease-out); }
+
+/* screen content entrance — transform-only so a paused/throttled
+   iframe never leaves content invisible (base state is fully visible) */
+@keyframes jb-screen-in { from { transform: translateY(7px); } to { transform: translateY(0); } }
+.jb-screen-in { animation: jb-screen-in 320ms var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .jb-live, .jb-spin, .jb-ring, .jb-eqbar, .jb-sheet, .jb-scrim, .jb-toast, .jb-flash, .jb-screen-in { animation: none; }
+}
