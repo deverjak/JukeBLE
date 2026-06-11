@@ -67,7 +67,8 @@
           "enableBackgroundPlayback": false
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true,
