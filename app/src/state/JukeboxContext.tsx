@@ -151,7 +151,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
   /* ── Playback ───────────────────────────────────────────── */
 
   const startPlayback = useCallback((sound: Sound, uid: string | null) => {
-    audio.play(soundUri(sound.filePath));
+    audio.play(soundUri(sound.filePath), sound.name);
     setNowPlaying({
       soundId: sound.id,
       uid,

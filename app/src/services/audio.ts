@@ -20,7 +20,13 @@ class AudioService {
 
   async init(): Promise<void> {
     try {
-      await setAudioModeAsync({ playsInSilentMode: true });
+      await setAudioModeAsync({
+        playsInSilentMode: true,
+        // without this expo-audio pauses the active player when the app backgrounds
+        shouldPlayInBackground: true,
+        // lock-screen controls (needed for sustained Android background playback) require doNotMix
+        interruptionMode: 'doNotMix',
+      });
     } catch {
       // non-fatal — playback still works with default audio mode
     }
@@ -30,7 +36,7 @@ class AudioService {
     this.listener = listener;
   }
 
-  play(uri: string): void {
+  play(uri: string, title?: string): void {
     this.stop();
     const player = createAudioPlayer({ uri }, { updateInterval: 250 });
     this.player = player;
@@ -43,12 +49,24 @@ class AudioService {
       });
     });
     player.play();
+    // Android stops background audio after ~3 min unless the player owns the
+    // lock-screen media session (runs the mediaPlayback foreground service)
+    try {
+      player.setActiveForLockScreen(true, { title: title ?? 'JukeBLE' }, { showSeekForward: false, showSeekBackward: false });
+    } catch {
+      // builds without the AudioControlsService can't activate the media session
+    }
   }
 
   stop(): void {
     this.statusSub?.remove();
     this.statusSub = null;
     if (this.player) {
+      try {
+        this.player.clearLockScreenControls();
+      } catch {
+        // player may already be released natively
+      }
       // remove() only releases the JS object — without pause() the native
       // player keeps playing in the background
       try {
