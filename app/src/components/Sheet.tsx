@@ -4,7 +4,6 @@ import {
   Easing,
   KeyboardAvoidingView,
   Modal,
-  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -56,7 +55,8 @@ export function Sheet({
           style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: tokens.scrim, opacity: progress }}>
           <Pressable style={{ flex: 1 }} onPress={onClose} accessibilityLabel="Zavřít" />
         </Animated.View>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        {/* 'padding' on both platforms: adjustResize never reaches a statusBarTranslucent Modal on Android */}
+        <KeyboardAvoidingView behavior="padding">
           <Animated.View
             style={{
               backgroundColor: tokens.bg1,
