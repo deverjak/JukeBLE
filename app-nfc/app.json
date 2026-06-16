@@ -27,10 +27,6 @@
         "android.permission.NFC",
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.FOREGROUND_SERVICE",
-        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
-        "android.permission.NFC",
-        "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ]
     },
@@ -77,12 +73,6 @@
         "projectId": "5f90dcfa-5f07-4e5e-9ae3-cb69e7f48122"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "owner": "deverjak",
-    "updates": {
-      "url": "https://u.expo.dev/5f90dcfa-5f07-4e5e-9ae3-cb69e7f48122"
-    }
+    "owner": "deverjak"
   }
 }

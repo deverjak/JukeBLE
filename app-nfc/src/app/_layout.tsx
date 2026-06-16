@@ -31,6 +31,7 @@ import { VolumeSheet } from '../components/sheets/VolumeSheet';
 import { ToastHost } from '../components/Toast';
 import { LogoMark } from '../components/Logo';
 import { LanguageProvider } from '../i18n';
+import { enforceUpdate } from '../services/appUpdate';
 import { JukeboxProvider, useJukebox } from '../state/JukeboxContext';
 import { ThemeProvider, useTheme } from '../theme/ThemeContext';
 
@@ -103,6 +104,11 @@ export default function RootLayout() {
   useEffect(() => {
     if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded]);
+
+  // Force a blocking Play Store update on launch (Android, production only).
+  useEffect(() => {
+    enforceUpdate();
+  }, []);
 
   if (!fontsLoaded) return null;
 
