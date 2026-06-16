@@ -5,7 +5,6 @@ import { NowPlayingCard } from '../../components/NowPlayingCard';
 import { Simulator } from '../../components/Simulator';
 import { TapPrompt } from '../../components/TapPrompt';
 import { LiveDot } from '../../components/ui/anim';
-import { ModeToggle } from '../../components/ui/ModeToggle';
 import { Card, ConsoleRow, ConsoleValue, SectionLabel, monoText } from '../../components/ui/primitives';
 import { useT, fmt } from '../../i18n';
 import { useJukebox } from '../../state/JukeboxContext';
@@ -14,7 +13,7 @@ import { useTheme } from '../../theme/ThemeContext';
 export default function HomeScreen() {
   const { tokens } = useTheme();
   const t = useT();
-  const { mode, setMode, nfcStatus, nowPlaying, lastUid, sounds, cards } = useJukebox();
+  const { mode, nfcStatus, nowPlaying, lastUid, sounds, cards } = useJukebox();
 
   const scanning = nfcStatus === 'scanning';
   const ready = nfcStatus === 'idle';
@@ -28,12 +27,6 @@ export default function HomeScreen() {
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingTop: 4, paddingHorizontal: 20, paddingBottom: 24, gap: 22 }}
         showsVerticalScrollIndicator={false}>
-        {/* Operating mode */}
-        <View>
-          <SectionLabel>{t.player.operatingMode}</SectionLabel>
-          <ModeToggle mode={mode} onChange={setMode} labels={{ registration: t.modes.registration, play: t.modes.play }} />
-        </View>
-
         {/* Reader status console */}
         <View>
           <SectionLabel right={<Text style={[monoText(tokens.textFaint, 10), { letterSpacing: 0.8 }]}>{t.player.onDevice}</Text>}>

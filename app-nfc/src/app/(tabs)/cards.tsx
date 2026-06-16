@@ -1,9 +1,10 @@
-import { router } from 'expo-router';
 import { ScrollView, Text, View } from 'react-native';
 
 import { AppHeader } from '../../components/AppHeader';
 import { SwipeCardRow } from '../../components/SwipeCardRow';
+import { TapPrompt } from '../../components/TapPrompt';
 import { Button } from '../../components/ui/Button';
+import { ModeToggle } from '../../components/ui/ModeToggle';
 import { EmptyState, SectionLabel, monoText } from '../../components/ui/primitives';
 import { fmt, useT } from '../../i18n';
 import { soundFileExists } from '../../services/library';
@@ -13,28 +14,35 @@ import { useTheme } from '../../theme/ThemeContext';
 export default function CardsScreen() {
   const { tokens } = useTheme();
   const t = useT();
-  const { cards, sounds, setMode, previewCard, previewUid, openCardAction, askDeleteCard } = useJukebox();
-
-  const startRegister = () => {
-    setMode('registration');
-    router.navigate('/');
-  };
+  const { cards, sounds, mode, setMode, nfcStatus, previewCard, previewUid, openCardAction, askDeleteCard } =
+    useJukebox();
+  const scanning = nfcStatus === 'scanning';
 
   return (
     <View style={{ flex: 1, backgroundColor: tokens.bgPage }}>
       <AppHeader title={t.tabs.cards} sub={t.subs.cards} />
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: 4, paddingHorizontal: 20, paddingBottom: 28 }}
+        contentContainerStyle={{ paddingTop: 4, paddingHorizontal: 20, paddingBottom: 28, gap: 22 }}
         showsVerticalScrollIndicator={false}>
+        {/* Operating mode — registration lives here, on the Cards tab */}
+        <View>
+          <SectionLabel>{t.player.operatingMode}</SectionLabel>
+          <ModeToggle mode={mode} onChange={setMode} labels={{ registration: t.modes.registration, play: t.modes.play }} />
+        </View>
+
+        {mode === 'registration' && <TapPrompt active={scanning} mode="registration" />}
+
         {cards.length === 0 ? (
-          <EmptyState
-            icon="ticket"
-            tone="grape"
-            title={t.cards.noTitle}
-            body={t.cards.noBody}
-            action={<Button icon="plus" label={t.cards.registerCard} onPress={startRegister} />}
-          />
+          mode === 'play' && (
+            <EmptyState
+              icon="ticket"
+              tone="grape"
+              title={t.cards.noTitle}
+              body={t.cards.noBody}
+              action={<Button icon="plus" label={t.cards.registerCard} onPress={() => setMode('registration')} />}
+            />
+          )
         ) : (
           <>
             <SectionLabel right={<Text style={monoText(tokens.textFaint, 10)}>{fmt(t.cards.count, { n: cards.length })}</Text>}>
