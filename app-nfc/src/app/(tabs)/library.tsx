@@ -19,7 +19,8 @@ import { fmtClock } from '../../utils/format';
 
 export default function LibraryScreen() {
   const { tokens } = useTheme();
-  const { sounds, cards, importing, importToLibrary, previewSound, previewSoundId, askDeleteSound } = useJukebox();
+  const { sounds, cards, importing, importToLibrary, previewSound, previewSoundId, openVolume, askDeleteSound } =
+    useJukebox();
 
   const usage = (soundId: number) => cards.filter((c) => c.soundId === soundId).length;
 
@@ -87,6 +88,12 @@ export default function LibraryScreen() {
                         </Text>
                       </View>
                     </View>
+                    <IconButton
+                      name="sliders"
+                      size={18}
+                      onPress={() => openVolume(sound)}
+                      accessibilityLabel="Hlasitost"
+                    />
                     <IconButton name="trash" size={18} onPress={() => askDeleteSound(sound)} accessibilityLabel="Smazat" />
                   </Row>
                 );

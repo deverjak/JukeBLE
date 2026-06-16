@@ -58,7 +58,7 @@ export async function pickAndImportSounds(multiple: boolean): Promise<Sound[]> {
     const duration = await probeDuration(dest.uri);
     const type = (ext || asset.mimeType?.split('/')[1] || '').toUpperCase();
     const id = await insertSound(base, fileName, type, duration);
-    imported.push({ id, name: base, filePath: fileName, type, duration, createdAt: new Date().toISOString() });
+    imported.push({ id, name: base, filePath: fileName, type, duration, volume: 1, createdAt: new Date().toISOString() });
   }
   return imported;
 }

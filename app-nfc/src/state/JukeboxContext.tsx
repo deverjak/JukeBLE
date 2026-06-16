@@ -25,6 +25,7 @@ import {
   listCards,
   listSounds,
   renameCard,
+  updateSoundVolume,
   upsertCard,
 } from '../services/database';
 import { pickAndImportSounds, removeSound, soundFileExists, soundUri } from '../services/library';
@@ -40,6 +41,7 @@ import type {
   Sound,
   ToastAction,
   ToastData,
+  VolumeData,
 } from '../types';
 
 interface JukeboxValue {
@@ -78,6 +80,13 @@ interface JukeboxValue {
   closeRename: () => void;
   saveRename: (uid: string, name: string) => Promise<void>;
 
+  volumeEdit: VolumeData | null;
+  openVolume: (sound: Sound) => void;
+  closeVolume: () => void;
+  saveVolume: (id: number, volume: number) => Promise<void>;
+  /** Live drag-to-preview — sets the volume of the currently playing sound. */
+  setPreviewVolume: (volume: number) => void;
+
   confirm: ConfirmData | null;
   askDeleteSound: (sound: Sound) => void;
   askDeleteCard: (card: CardRow) => void;
@@ -106,6 +115,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<ToastData | null>(null);
   const [assign, setAssign] = useState<AssignData | null>(null);
   const [rename, setRename] = useState<RenameData | null>(null);
+  const [volumeEdit, setVolumeEdit] = useState<VolumeData | null>(null);
   const [confirm, setConfirm] = useState<ConfirmData | null>(null);
   const [importing, setImporting] = useState(false);
 
@@ -152,7 +162,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
   /* ── Playback ───────────────────────────────────────────── */
 
   const startPlayback = useCallback((sound: Sound, uid: string | null) => {
-    audio.play(soundUri(sound.filePath), sound.name);
+    audio.play(soundUri(sound.filePath), sound.name, sound.volume);
     setNowPlaying({
       soundId: sound.id,
       uid,
@@ -363,6 +373,26 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
     [fireToast, refreshCards]
   );
 
+  /* ── Per-song volume ────────────────────────────────────── */
+
+  const openVolume = useCallback((sound: Sound) => {
+    setVolumeEdit({ id: sound.id, name: sound.name, volume: sound.volume });
+  }, []);
+
+  const setPreviewVolume = useCallback((volume: number) => {
+    audio.setVolume(volume);
+  }, []);
+
+  const saveVolume = useCallback(
+    async (id: number, volume: number) => {
+      await updateSoundVolume(id, volume);
+      await refreshSounds();
+      setVolumeEdit(null);
+      fireToast({ tone: 'ok', msg: 'Hlasitost uložena' });
+    },
+    [fireToast, refreshSounds]
+  );
+
   const askDeleteSound = useCallback((sound: Sound) => {
     setConfirm({
       kind: 'sound',
@@ -462,6 +492,11 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       openRename: setRename,
       closeRename: () => setRename(null),
       saveRename,
+      volumeEdit,
+      openVolume,
+      closeVolume: () => setVolumeEdit(null),
+      saveVolume,
+      setPreviewVolume,
       confirm,
       askDeleteSound,
       askDeleteCard,
@@ -495,6 +530,10 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       saveAssign,
       rename,
       saveRename,
+      volumeEdit,
+      openVolume,
+      saveVolume,
+      setPreviewVolume,
       confirm,
       askDeleteSound,
       askDeleteCard,

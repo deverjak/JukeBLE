@@ -27,6 +27,7 @@ async function openAndMigrate(): Promise<SQLite.SQLiteDatabase> {
       file_path TEXT NOT NULL,
       type TEXT NOT NULL DEFAULT '',
       duration REAL NOT NULL DEFAULT 0,
+      volume REAL NOT NULL DEFAULT 1,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -37,6 +38,14 @@ async function openAndMigrate(): Promise<SQLite.SQLiteDatabase> {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  // Existing installs already have a sounds table without the volume column —
+  // CREATE TABLE IF NOT EXISTS leaves it untouched, so add the column on upgrade.
+  const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(sounds)');
+  if (!cols.some((c) => c.name === 'volume')) {
+    await db.execAsync('ALTER TABLE sounds ADD COLUMN volume REAL NOT NULL DEFAULT 1');
+  }
+
   return db;
 }
 
@@ -48,6 +57,7 @@ interface SoundDbRow {
   file_path: string;
   type: string;
   duration: number;
+  volume: number;
   created_at: string;
 }
 
@@ -58,6 +68,7 @@ function mapSound(row: SoundDbRow): Sound {
     filePath: row.file_path,
     type: row.type,
     duration: row.duration,
+    volume: row.volume,
     createdAt: row.created_at,
   };
 }
@@ -65,7 +76,7 @@ function mapSound(row: SoundDbRow): Sound {
 export async function listSounds(): Promise<Sound[]> {
   const db = await getDb();
   const rows = await db.getAllAsync<SoundDbRow>(
-    'SELECT id, name, file_path, type, duration, created_at FROM sounds ORDER BY created_at DESC, id DESC'
+    'SELECT id, name, file_path, type, duration, volume, created_at FROM sounds ORDER BY created_at DESC, id DESC'
   );
   return rows.map(mapSound);
 }
@@ -80,6 +91,11 @@ export async function insertSound(name: string, filePath: string, type: string, 
     duration
   );
   return result.lastInsertRowId;
+}
+
+export async function updateSoundVolume(id: number, volume: number): Promise<void> {
+  const db = await getDb();
+  await db.runAsync('UPDATE sounds SET volume = ? WHERE id = ?', volume, id);
 }
 
 export async function deleteSoundRow(id: number): Promise<void> {

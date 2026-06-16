@@ -9,6 +9,8 @@ export interface Sound {
   type: string;
   /** Duration in seconds (0 when unknown). */
   duration: number;
+  /** Playback level 0..1 (1 = full/unchanged file level). */
+  volume: number;
   createdAt: string;
 }
 
@@ -74,6 +76,13 @@ export interface AssignData {
 export interface RenameData {
   uid: string;
   name: string;
+}
+
+export interface VolumeData {
+  id: number;
+  name: string;
+  /** Current level 0..1. */
+  volume: number;
 }
 
 export interface ConfirmData {

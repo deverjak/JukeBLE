@@ -20,6 +20,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AssignSheet } from '../components/sheets/AssignSheet';
 import { ConfirmSheet } from '../components/sheets/ConfirmSheet';
 import { RenameSheet } from '../components/sheets/RenameSheet';
+import { VolumeSheet } from '../components/sheets/VolumeSheet';
 import { ToastHost } from '../components/Toast';
 import { JukeboxProvider } from '../state/JukeboxContext';
 import { ThemeProvider, useTheme } from '../theme/ThemeContext';
@@ -43,6 +44,7 @@ function RootInner() {
       <ToastHost />
       <AssignSheet />
       <RenameSheet />
+      <VolumeSheet />
       <ConfirmSheet />
     </View>
   );

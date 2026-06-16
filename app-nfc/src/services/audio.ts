@@ -36,10 +36,22 @@ class AudioService {
     this.listener = listener;
   }
 
-  play(uri: string, title?: string): void {
+  /** Adjust the volume of the currently-playing sound live (drag-to-preview). */
+  setVolume(volume: number): void {
+    if (this.player) {
+      try {
+        this.player.volume = Math.max(0, Math.min(1, volume));
+      } catch {
+        // player may already be released natively
+      }
+    }
+  }
+
+  play(uri: string, title?: string, volume = 1): void {
     this.stop();
     const player = createAudioPlayer({ uri }, { updateInterval: 250 });
     this.player = player;
+    player.volume = Math.max(0, Math.min(1, volume));
     this.statusSub = player.addListener('playbackStatusUpdate', (status: AudioStatus) => {
       this.listener?.({
         position: status.currentTime ?? 0,
