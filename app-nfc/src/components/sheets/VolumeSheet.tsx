@@ -2,6 +2,7 @@ import Slider from '@react-native-community/slider';
 import { useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
+import { useT } from '../../i18n';
 import { useJukebox } from '../../state/JukeboxContext';
 import { useTheme } from '../../theme/ThemeContext';
 import { fonts } from '../../theme/tokens';
@@ -18,6 +19,7 @@ export function VolumeSheet() {
 
 function VolumeSheetInner({ data }: { data: VolumeData }) {
   const { tokens } = useTheme();
+  const t = useT();
   const { closeVolume, saveVolume, previewSound, stopPlayback, setPreviewVolume, previewSoundId } = useJukebox();
   const [vol, setVol] = useState(data.volume);
 
@@ -33,11 +35,10 @@ function VolumeSheetInner({ data }: { data: VolumeData }) {
   }, []);
 
   return (
-    <Sheet visible onClose={closeVolume} label={data.name} title="Hlasitost">
-      <View
-        style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
-        <Text style={monoText(tokens.fg3)}>ÚROVEŇ</Text>
-        <Text style={{ fontFamily: fonts.mono.medium, fontSize: 26, letterSpacing: -0.5, color: tokens.fg0 }}>
+    <Sheet visible onClose={closeVolume} label={data.name} title={t.volume.title}>
+      <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
+        <Text style={monoText(tokens.textFaint)}>{t.volume.level}</Text>
+        <Text style={{ fontFamily: fonts.display.bold, fontSize: 28, letterSpacing: -0.5, color: tokens.textStrong }}>
           {Math.round(vol * 100)} %
         </Text>
       </View>
@@ -49,17 +50,15 @@ function VolumeSheetInner({ data }: { data: VolumeData }) {
           setVol(v);
           setPreviewVolume(v);
         }}
-        minimumTrackTintColor={tokens.accent}
-        maximumTrackTintColor={tokens.line2}
-        thumbTintColor={tokens.accent}
+        minimumTrackTintColor={tokens.brand}
+        maximumTrackTintColor={tokens.borderStrong}
+        thumbTintColor={tokens.brand}
         style={{ width: '100%', height: 40, marginBottom: 8 }}
       />
-      <Text style={[monoText(tokens.fg3, 11.5), { marginBottom: 22, lineHeight: 17 }]}>
-        Ztlumte hlasitější zvuky, aby všechny karty hrály podobně nahlas.
-      </Text>
+      <Text style={[monoText(tokens.textFaint, 11.5), { marginBottom: 22, lineHeight: 18 }]}>{t.volume.hint}</Text>
       <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Button variant="ghost" label="Zrušit" onPress={closeVolume} style={{ flex: 1 }} />
-        <Button label="Uložit" onPress={() => saveVolume(data.id, vol)} style={{ flex: 2 }} />
+        <Button variant="ghost" label={t.common.cancel} onPress={closeVolume} style={{ flex: 1 }} />
+        <Button label={t.common.save} onPress={() => saveVolume(data.id, vol)} style={{ flex: 2 }} />
       </View>
     </Sheet>
   );

@@ -29,6 +29,8 @@ import {
   upsertCard,
 } from '../services/database';
 import { pickAndImportSounds, removeSound, soundFileExists, soundUri } from '../services/library';
+import { getSavedFlag, setSavedFlag } from '../services/settings';
+import { fmt, useT } from '../i18n';
 import type {
   AssignData,
   CardRow,
@@ -63,8 +65,15 @@ interface JukeboxValue {
   nowPlaying: NowPlaying | null;
   lastUid: string | null;
   previewSoundId: number | null;
+  previewUid: string | null;
   previewSound: (soundId: number) => void;
+  previewCard: (card: CardRow) => void;
   stopPlayback: () => void;
+
+  keepAwake: boolean;
+  setKeepAwake: (v: boolean) => void;
+  autoResume: boolean;
+  setAutoResume: (v: boolean) => void;
 
   toast: ToastData | null;
   dismissToast: () => void;
@@ -79,6 +88,10 @@ interface JukeboxValue {
   openRename: (data: RenameData) => void;
   closeRename: () => void;
   saveRename: (uid: string, name: string) => Promise<void>;
+
+  cardAction: CardRow | null;
+  openCardAction: (card: CardRow) => void;
+  closeCardAction: () => void;
 
   volumeEdit: VolumeData | null;
   openVolume: (sound: Sound) => void;
@@ -104,6 +117,7 @@ interface JukeboxValue {
 const JukeboxContext = createContext<JukeboxValue | null>(null);
 
 export function JukeboxProvider({ children }: { children: ReactNode }) {
+  const t = useT();
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<Mode>('play');
   const [nfcStatus, setNfcStatus] = useState<NfcStatus>('idle');
@@ -116,14 +130,25 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
   const [assign, setAssign] = useState<AssignData | null>(null);
   const [rename, setRename] = useState<RenameData | null>(null);
   const [volumeEdit, setVolumeEdit] = useState<VolumeData | null>(null);
+  const [cardAction, setCardAction] = useState<CardRow | null>(null);
   const [confirm, setConfirm] = useState<ConfirmData | null>(null);
   const [importing, setImporting] = useState(false);
+  const [keepAwake, setKeepAwakeState] = useState(() => getSavedFlag('keepAwake', false));
+  const [autoResume, setAutoResumeState] = useState(() => getSavedFlag('autoResume', true));
 
   /* Refs so the long-lived NFC callback always sees current state. */
   const modeRef = useRef(mode);
   const soundsRef = useRef(sounds);
   const cardsRef = useRef(cards);
   const nowPlayingRef = useRef(nowPlaying);
+  const tRef = useRef(t);
+  const autoResumeRef = useRef(autoResume);
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
+  useEffect(() => {
+    autoResumeRef.current = autoResume;
+  }, [autoResume]);
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
@@ -180,6 +205,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
 
   const previewSoundId =
     nowPlaying && nowPlaying.uid === null && nowPlaying.playing ? nowPlaying.soundId : null;
+  const previewUid = nowPlaying && nowPlaying.uid && nowPlaying.playing ? nowPlaying.uid : null;
 
   const previewSound = useCallback(
     (soundId: number) => {
@@ -191,10 +217,39 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       const sound = soundsRef.current.find((s) => s.id === soundId);
       if (!sound) return;
       if (!soundFileExists(sound.filePath)) {
-        fireToast({ tone: 'error', msg: 'Zvukový soubor chybí na disku' });
+        fireToast({ tone: 'error', msg: tRef.current.toast.soundFileMissingDisk });
         return;
       }
       startPlayback(sound, null);
+    },
+    [fireToast, startPlayback, stopPlayback]
+  );
+
+  const previewCard = useCallback(
+    (card: CardRow) => {
+      const current = nowPlayingRef.current;
+      if (current && current.uid === card.uid && current.playing) {
+        stopPlayback();
+        return;
+      }
+      if (!card.soundId) {
+        fireToast({
+          tone: 'warn',
+          msg: fmt(tRef.current.toast.noSoundOnCard, { name: card.name }),
+          action: { label: tRef.current.toast.actionAssign, kind: 'assign', uid: card.uid },
+        });
+        return;
+      }
+      const sound = soundsRef.current.find((s) => s.id === card.soundId);
+      if (!sound || !soundFileExists(sound.filePath)) {
+        fireToast({
+          tone: 'error',
+          msg: tRef.current.toast.soundFileMissing,
+          action: { label: tRef.current.toast.actionRemap, kind: 'assign', uid: card.uid },
+        });
+        return;
+      }
+      startPlayback(sound, card.uid);
     },
     [fireToast, startPlayback, stopPlayback]
   );
@@ -220,16 +275,16 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       if (!card) {
         fireToast({
           tone: 'error',
-          msg: `Neznámá karta ${uid}`,
-          action: { label: 'Registrovat', kind: 'register', uid },
+          msg: fmt(tRef.current.toast.unknownCard, { uid }),
+          action: { label: tRef.current.toast.actionRegister, kind: 'register', uid },
         });
         return;
       }
       if (!card.soundId) {
         fireToast({
           tone: 'warn',
-          msg: `Karta „${card.name}“ nemá přiřazený zvuk`,
-          action: { label: 'Přiřadit', kind: 'assign', uid },
+          msg: fmt(tRef.current.toast.noSoundOnCard, { name: card.name }),
+          action: { label: tRef.current.toast.actionAssign, kind: 'assign', uid },
         });
         return;
       }
@@ -237,8 +292,8 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       if (!sound || !soundFileExists(sound.filePath)) {
         fireToast({
           tone: 'error',
-          msg: 'Zvukový soubor chybí',
-          action: { label: 'Přemapovat', kind: 'assign', uid },
+          msg: tRef.current.toast.soundFileMissing,
+          action: { label: tRef.current.toast.actionRemap, kind: 'assign', uid },
         });
         return;
       }
@@ -256,7 +311,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       const card = cardsRef.current.find((c) => c.uid === action.uid);
       if (action.kind === 'register') {
         setMode('registration');
-        router.navigate('/cards');
+        router.navigate('/');
         setAssign({ uid: action.uid, mode: 'new', currentName: '', currentSoundId: null });
       } else {
         router.navigate('/');
@@ -293,8 +348,9 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
     // on resume and release the antenna when the app leaves the foreground.
     const appStateSub = AppState.addEventListener('change', (next) => {
       nfc.note(`AppState → ${next}`);
-      if (next === 'active') void nfc.startScan();
-      else void nfc.stopScan();
+      if (next === 'active') {
+        if (autoResumeRef.current) void nfc.startScan();
+      } else void nfc.stopScan();
     });
 
     return () => {
@@ -306,15 +362,15 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* Keep the screen awake while listening — NFC stops the moment it sleeps,
-     so a jukebox left unattended must not lock itself out. */
+  /* Keep the screen awake while listening (kiosk) — NFC stops the moment the
+     screen sleeps, so an unattended jukebox must not lock itself out. Opt-in. */
   useEffect(() => {
-    if (nfcStatus !== 'scanning') return;
+    if (nfcStatus !== 'scanning' || !keepAwake) return;
     void activateKeepAwakeAsync('jukenfc-nfc');
     return () => {
       void deactivateKeepAwake('jukenfc-nfc');
     };
-  }, [nfcStatus]);
+  }, [nfcStatus, keepAwake]);
 
   /* Playback progress from the audio player. */
   useEffect(() => {
@@ -351,6 +407,15 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
 
   const clearNfcLog = useCallback(() => setNfcLog([]), []);
 
+  const setKeepAwake = useCallback((v: boolean) => {
+    setSavedFlag('keepAwake', v);
+    setKeepAwakeState(v);
+  }, []);
+  const setAutoResume = useCallback((v: boolean) => {
+    setSavedFlag('autoResume', v);
+    setAutoResumeState(v);
+  }, []);
+
   /* ── Assign / rename / delete ───────────────────────────── */
 
   const saveAssign = useCallback(
@@ -358,7 +423,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       await upsertCard(uid, name, soundId);
       await refreshCards();
       setAssign(null);
-      fireToast({ tone: 'ok', msg: isNew ? 'Karta zaregistrována' : 'Změny uloženy' });
+      fireToast({ tone: 'ok', msg: isNew ? tRef.current.toast.cardRegistered : tRef.current.toast.changesSaved });
     },
     [fireToast, refreshCards]
   );
@@ -368,7 +433,7 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       await renameCard(uid, name);
       await refreshCards();
       setRename(null);
-      fireToast({ tone: 'ok', msg: 'Přejmenováno' });
+      fireToast({ tone: 'ok', msg: tRef.current.toast.renamed });
     },
     [fireToast, refreshCards]
   );
@@ -388,26 +453,32 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       await updateSoundVolume(id, volume);
       await refreshSounds();
       setVolumeEdit(null);
-      fireToast({ tone: 'ok', msg: 'Hlasitost uložena' });
+      fireToast({ tone: 'ok', msg: tRef.current.toast.volumeSaved });
     },
     [fireToast, refreshSounds]
   );
 
-  const askDeleteSound = useCallback((sound: Sound) => {
-    setConfirm({
-      kind: 'sound',
-      id: sound.id,
-      title: 'Smazat zvuk?',
-      body: `„${sound.name}“ bude odebrán z knihovny. Karty s tímto zvukem zůstanou bez přiřazení.`,
-    });
-  }, []);
+  const openCardAction = useCallback((card: CardRow) => setCardAction(card), []);
+  const closeCardAction = useCallback(() => setCardAction(null), []);
+
+  const askDeleteSound = useCallback(
+    (sound: Sound) => {
+      setConfirm({
+        kind: 'sound',
+        id: sound.id,
+        title: tRef.current.confirm.deleteSoundTitle,
+        body: fmt(tRef.current.confirm.deleteSoundBody, { name: sound.name }),
+      });
+    },
+    []
+  );
 
   const askDeleteCard = useCallback((card: CardRow) => {
     setConfirm({
       kind: 'card',
       id: card.uid,
-      title: 'Smazat kartu?',
-      body: `Registrace karty ${card.uid} bude odstraněna. Zvuky v knihovně zůstanou.`,
+      title: tRef.current.confirm.deleteCardTitle,
+      body: fmt(tRef.current.confirm.deleteCardBody, { uid: card.uid }),
     });
   }, []);
 
@@ -419,11 +490,11 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       if (current && current.soundId === confirm.id) stopPlayback();
       if (sound) await removeSound(sound);
       await Promise.all([refreshSounds(), refreshCards()]);
-      fireToast({ tone: 'default', msg: 'Zvuk smazán' });
+      fireToast({ tone: 'default', msg: tRef.current.toast.soundDeleted });
     } else {
       await deleteCardRow(String(confirm.id));
       await refreshCards();
-      fireToast({ tone: 'default', msg: 'Karta smazána' });
+      fireToast({ tone: 'default', msg: tRef.current.toast.cardDeleted });
     }
     setConfirm(null);
   }, [confirm, fireToast, refreshCards, refreshSounds, stopPlayback]);
@@ -438,11 +509,14 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
         await refreshSounds();
         fireToast({
           tone: 'ok',
-          msg: imported.length === 1 ? `„${imported[0].name}“ přidáno do knihovny` : `${imported.length} zvuků přidáno do knihovny`,
+          msg:
+            imported.length === 1
+              ? fmt(tRef.current.toast.addedOne, { name: imported[0].name })
+              : fmt(tRef.current.toast.addedMany, { n: imported.length }),
         });
       }
     } catch {
-      fireToast({ tone: 'error', msg: 'Import se nezdařil' });
+      fireToast({ tone: 'error', msg: tRef.current.toast.importFailed });
     } finally {
       setImporting(false);
     }
@@ -453,10 +527,10 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       const imported = await pickAndImportSounds(false);
       if (imported.length === 0) return null;
       await refreshSounds();
-      fireToast({ tone: 'ok', msg: `„${imported[0].name}“ přidáno do knihovny` });
+      fireToast({ tone: 'ok', msg: fmt(tRef.current.toast.addedOne, { name: imported[0].name }) });
       return imported[0].id;
     } catch {
-      fireToast({ tone: 'error', msg: 'Import se nezdařil' });
+      fireToast({ tone: 'error', msg: tRef.current.toast.importFailed });
       return null;
     }
   }, [fireToast, refreshSounds]);
@@ -479,8 +553,14 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       nowPlaying,
       lastUid,
       previewSoundId,
+      previewUid,
       previewSound,
+      previewCard,
       stopPlayback,
+      keepAwake,
+      setKeepAwake,
+      autoResume,
+      setAutoResume,
       toast,
       dismissToast,
       onToastAction,
@@ -492,6 +572,9 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       openRename: setRename,
       closeRename: () => setRename(null),
       saveRename,
+      cardAction,
+      openCardAction,
+      closeCardAction,
       volumeEdit,
       openVolume,
       closeVolume: () => setVolumeEdit(null),
@@ -521,8 +604,14 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       nowPlaying,
       lastUid,
       previewSoundId,
+      previewUid,
       previewSound,
+      previewCard,
       stopPlayback,
+      keepAwake,
+      setKeepAwake,
+      autoResume,
+      setAutoResume,
       toast,
       dismissToast,
       onToastAction,
@@ -530,6 +619,9 @@ export function JukeboxProvider({ children }: { children: ReactNode }) {
       saveAssign,
       rename,
       saveRename,
+      cardAction,
+      openCardAction,
+      closeCardAction,
       volumeEdit,
       openVolume,
       saveVolume,

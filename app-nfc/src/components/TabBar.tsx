@@ -3,35 +3,41 @@ import { useEffect, useState } from 'react';
 import { BackHandler, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useT } from '../i18n';
 import { useJukebox } from '../state/JukeboxContext';
 import { useTheme } from '../theme/ThemeContext';
-import { fonts } from '../theme/tokens';
+import { fonts, radii } from '../theme/tokens';
 import { Icon, type IconName } from './Icon';
 import { Sheet } from './Sheet';
 import { Button } from './ui/Button';
 
-const TAB_META: Record<string, { label: string; icon: IconName }> = {
-  index: { label: 'Domů', icon: 'activity' },
-  cards: { label: 'Karty', icon: 'card' },
-  library: { label: 'Zvuky', icon: 'audio-lines' },
+const TAB_ICON: Record<string, IconName> = {
+  index: 'radio',
+  cards: 'ticket',
+  library: 'audio-lines',
 };
 
 export function TabBar({ state, navigation }: BottomTabBarProps) {
   const { tokens } = useTheme();
+  const t = useT();
   const insets = useSafeAreaInsets();
   const { mode, setMode } = useJukebox();
+
+  const tabLabel: Record<string, string> = {
+    index: t.tabs.player,
+    cards: t.tabs.cards,
+    library: t.tabs.sounds,
+  };
 
   /* Registration mode lives on the Cards tab — leaving it switches the mode
      back to play, so the switch must be confirmed instead of happening silently. */
   const [pendingTab, setPendingTab] = useState<string | null>(null);
   const guardActive = mode === 'registration' && state.routes[state.index].name === 'cards';
 
-  /* Android hardware back from a non-first tab acts as a tab switch to Home,
-     so it has to go through the same guard. */
   useEffect(() => {
     if (!guardActive) return;
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (!navigation.isFocused()) return false; // a stack screen (nfc) is on top
+      if (!navigation.isFocused()) return false;
       setPendingTab(state.routes[0].name);
       return true;
     });
@@ -50,17 +56,17 @@ export function TabBar({ state, navigation }: BottomTabBarProps) {
       <View
         style={{
           flexDirection: 'row',
+          gap: 4,
           paddingTop: 8,
           paddingHorizontal: 12,
           paddingBottom: Math.max(insets.bottom, 10),
           borderTopWidth: 1,
-          borderTopColor: tokens.line1,
-          backgroundColor: tokens.bg0,
+          borderTopColor: tokens.borderSoft,
+          backgroundColor: tokens.bgPage,
         }}>
         {state.routes.map((route, index) => {
-          const meta = TAB_META[route.name] ?? { label: route.name, icon: 'activity' as IconName };
           const active = state.index === index;
-          const color = active ? tokens.accentInk : tokens.fg2;
+          const color = active ? tokens.brand : tokens.textMuted;
           return (
             <Pressable
               key={route.key}
@@ -73,17 +79,25 @@ export function TabBar({ state, navigation }: BottomTabBarProps) {
                 }
                 navigation.navigate(route.name);
               }}
-              style={{ flex: 1, alignItems: 'center', gap: 5, paddingVertical: 7 }}>
-              <Icon name={meta.icon} size={23} color={color} strokeWidth={active ? 2 : 1.5} />
+              style={{ flex: 1, alignItems: 'center', gap: 6, paddingVertical: 6 }}>
+              <View
+                style={{
+                  width: 52,
+                  height: 30,
+                  borderRadius: radii.pill,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: active ? tokens.brandSoft : 'transparent',
+                }}>
+                <Icon name={TAB_ICON[route.name] ?? 'radio'} size={22} color={color} strokeWidth={active ? 2.2 : 1.8} />
+              </View>
               <Text
                 style={{
-                  fontFamily: active ? fonts.mono.semibold : fonts.mono.medium,
-                  fontSize: 10,
-                  letterSpacing: 0.6,
-                  textTransform: 'uppercase',
+                  fontFamily: active ? fonts.body.extra : fonts.body.bold,
+                  fontSize: 11,
                   color,
                 }}>
-                {meta.label}
+                {tabLabel[route.name] ?? route.name}
               </Text>
             </Pressable>
           );
@@ -91,25 +105,20 @@ export function TabBar({ state, navigation }: BottomTabBarProps) {
       </View>
 
       {pendingTab != null && (
-        <Sheet visible onClose={() => setPendingTab(null)} label="Provozní mód" title="Ukončit registraci?">
+        <Sheet visible onClose={() => setPendingTab(null)} label={t.player.operatingMode} title={t.guard.title}>
           <Text
             style={{
-              fontFamily: fonts.sans.regular,
-              fontSize: 14.5,
-              color: tokens.fg1,
+              fontFamily: fonts.body.regular,
+              fontSize: 15,
+              color: tokens.textBody,
               lineHeight: 22,
               marginBottom: 22,
             }}>
-            Opuštěním záložky Karty se provozní mód přepne z registrace na přehrávání.
+            {t.guard.body}
           </Text>
           <View style={{ flexDirection: 'row', gap: 10 }}>
-            <Button
-              variant="ghost"
-              label="Zůstat na kartách"
-              onPress={() => setPendingTab(null)}
-              style={{ flex: 1 }}
-            />
-            <Button icon="play" label="OK" onPress={confirmLeave} style={{ flex: 1 }} />
+            <Button variant="ghost" label={t.guard.stay} onPress={() => setPendingTab(null)} style={{ flex: 1 }} />
+            <Button icon="play" label={t.guard.switchToPlay} onPress={confirmLeave} style={{ flex: 2 }} />
           </View>
         </Sheet>
       )}

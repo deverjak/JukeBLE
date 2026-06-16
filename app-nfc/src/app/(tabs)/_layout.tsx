@@ -8,7 +8,7 @@ export default function TabsLayout() {
   return (
     <Tabs
       tabBar={(props) => <TabBar {...props} />}
-      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: tokens.bg0 } }}>
+      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: tokens.bgPage } }}>
       <Tabs.Screen name="index" options={{ title: 'Domů' }} />
       <Tabs.Screen name="cards" options={{ title: 'Karty' }} />
       <Tabs.Screen name="library" options={{ title: 'Zvuky' }} />

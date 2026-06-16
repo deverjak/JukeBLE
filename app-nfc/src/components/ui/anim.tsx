@@ -20,31 +20,42 @@ export function Spinner({ size = 17, color }: { size?: number; color?: string })
   return (
     <Animated.View
       style={{ transform: [{ rotate: spin.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] }) }] }}>
-      <Icon name="loader" size={size} color={color ?? tokens.fg2} />
+      <Icon name="loader" size={size} color={color ?? tokens.textMuted} />
     </Animated.View>
   );
 }
 
-/* ── Pulsing live dot ─────────────────────────────────────── */
+/* ── Live status dot with expanding halo ──────────────────── */
 export function LiveDot({ color, size = 6, pulse = true }: { color: string; size?: number; pulse?: boolean }) {
-  const opacity = useAnimatedValue(1);
+  const wave = useAnimatedValue(0);
 
   useEffect(() => {
     if (!pulse) return;
     const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacity, { toValue: 0.35, duration: 800, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
-        Animated.timing(opacity, { toValue: 1, duration: 800, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
-      ])
+      Animated.timing(wave, { toValue: 1, duration: 1600, easing: Easing.out(Easing.cubic), useNativeDriver: true })
     );
     loop.start();
     return () => loop.stop();
-  }, [opacity, pulse]);
+  }, [wave, pulse]);
 
   return (
-    <Animated.View
-      style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: color, opacity: pulse ? opacity : 1 }}
-    />
+    <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+      {pulse && (
+        <Animated.View
+          pointerEvents="none"
+          style={{
+            position: 'absolute',
+            width: size,
+            height: size,
+            borderRadius: size / 2,
+            backgroundColor: color,
+            opacity: wave.interpolate({ inputRange: [0, 1], outputRange: [0.45, 0] }),
+            transform: [{ scale: wave.interpolate({ inputRange: [0, 1], outputRange: [1, 2.6] }) }],
+          }}
+        />
+      )}
+      <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: color }} />
+    </View>
   );
 }
 
@@ -88,7 +99,7 @@ function EqBar({ playing, delay, idleScale, color, height }: { playing: boolean;
 
 export function EqBars({ playing, color, size = 18 }: { playing: boolean; color?: string; size?: number }) {
   const { tokens } = useTheme();
-  const barColor = color ?? tokens.accent;
+  const barColor = color ?? tokens.brand;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 2.5, height: size }}>
       {EQ_DELAYS.map((delay, i) => (
@@ -133,12 +144,12 @@ function Ring({ size, delay, color }: { size: number; delay: number; color: stri
   );
 }
 
-export function RadarRings({ size, delays }: { size: number; delays: number[] }) {
+export function RadarRings({ size, delays, color }: { size: number; delays: number[]; color?: string }) {
   const { tokens } = useTheme();
   return (
     <>
       {delays.map((delay, i) => (
-        <Ring key={i} size={size} delay={delay} color={tokens.accent} />
+        <Ring key={i} size={size} delay={delay} color={color ?? tokens.brand} />
       ))}
     </>
   );

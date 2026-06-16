@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useJukebox } from '../state/JukeboxContext';
 import { useTheme } from '../theme/ThemeContext';
-import { fonts } from '../theme/tokens';
+import { fonts, radii, shadow } from '../theme/tokens';
 import { Icon, type IconName } from './Icon';
 import { Button } from './ui/Button';
 
@@ -29,15 +29,15 @@ export function ToastHost() {
 
   if (!toast) return null;
 
-  const iconName: IconName = toast.tone === 'error' ? 'alert' : toast.tone === 'ok' ? 'check-circle' : toast.tone === 'warn' ? 'alert' : 'zap';
+  const iconName: IconName = toast.tone === 'error' ? 'alert-triangle' : toast.tone === 'ok' ? 'check-circle-2' : toast.tone === 'warn' ? 'alert-triangle' : 'zap';
   const iconColor =
     toast.tone === 'error'
-      ? tokens.error
+      ? tokens.danger
       : toast.tone === 'ok'
-        ? tokens.accentInk
+        ? tokens.success
         : toast.tone === 'warn'
-          ? tokens.warn
-          : tokens.fg0;
+          ? tokens.warning
+          : tokens.textStrong;
 
   return (
     <View
@@ -50,27 +50,25 @@ export function ToastHost() {
         alignItems: 'center',
       }}>
       <Animated.View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 12,
-          paddingVertical: 12,
-          paddingHorizontal: 14,
-          borderRadius: 12,
-          borderWidth: 1,
-          borderColor: tokens.line1,
-          backgroundColor: tokens.bg1,
-          maxWidth: '100%',
-          shadowColor: '#000',
-          shadowOpacity: 0.35,
-          shadowRadius: 15,
-          shadowOffset: { width: 0, height: 12 },
-          elevation: 8,
-          opacity: rise,
-          transform: [{ translateY: rise.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }],
-        }}>
-        <Icon name={iconName} size={19} color={iconColor} />
-        <Text style={{ fontFamily: fonts.sans.regular, fontSize: 14, color: tokens.fg0, flexShrink: 1, lineHeight: 19 }}>
+        style={[
+          {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 12,
+            paddingVertical: 12,
+            paddingHorizontal: 14,
+            borderRadius: radii.lg,
+            borderWidth: 1,
+            borderColor: tokens.borderMid,
+            backgroundColor: tokens.surfaceRaised,
+            maxWidth: '100%',
+            opacity: rise,
+            transform: [{ translateY: rise.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }],
+          },
+          shadow('lg'),
+        ]}>
+        <Icon name={iconName} size={20} color={iconColor} />
+        <Text style={{ fontFamily: fonts.body.semibold, fontSize: 14, color: tokens.textStrong, flexShrink: 1, lineHeight: 19 }}>
           {toast.msg}
         </Text>
         {toast.action && (

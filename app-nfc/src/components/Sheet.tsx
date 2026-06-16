@@ -14,7 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../theme/ThemeContext';
-import { fonts } from '../theme/tokens';
+import { fonts, radii } from '../theme/tokens';
 import { IconButton } from './ui/primitives';
 
 /** Bottom sheet — gentle rise + scrim fade, matching the prototype. */
@@ -59,11 +59,11 @@ export function Sheet({
         <KeyboardAvoidingView behavior="padding">
           <Animated.View
             style={{
-              backgroundColor: tokens.bg1,
+              backgroundColor: tokens.surfaceRaised,
               borderTopWidth: 1,
-              borderTopColor: tokens.line2,
-              borderTopLeftRadius: 22,
-              borderTopRightRadius: 22,
+              borderTopColor: tokens.borderMid,
+              borderTopLeftRadius: radii.xxl,
+              borderTopRightRadius: radii.xxl,
               paddingTop: 10,
               paddingHorizontal: 20,
               paddingBottom: insets.bottom + 24,
@@ -71,7 +71,7 @@ export function Sheet({
               transform: [{ translateY: progress.interpolate({ inputRange: [0, 1], outputRange: [22, 0] }) }],
             }}>
             <View style={{ alignItems: 'center', paddingTop: 4, paddingBottom: 14 }}>
-              <View style={{ width: 38, height: 4, borderRadius: 2, backgroundColor: tokens.line2 }} />
+              <View style={{ width: 40, height: 5, borderRadius: 3, backgroundColor: tokens.borderStrong }} />
             </View>
             {(title || label) && (
               <View
@@ -88,16 +88,16 @@ export function Sheet({
                       style={{
                         fontFamily: fonts.mono.regular,
                         fontSize: 11,
-                        letterSpacing: 0.88,
+                        letterSpacing: 1,
                         textTransform: 'uppercase',
-                        color: tokens.fg2,
+                        color: tokens.textMuted,
                         marginBottom: 6,
                       }}>
                       {label}
                     </Text>
                   )}
                   {title && (
-                    <Text style={{ fontFamily: fonts.sans.medium, fontSize: 22, letterSpacing: -0.22, color: tokens.fg0 }}>
+                    <Text style={{ fontFamily: fonts.display.bold, fontSize: 23, letterSpacing: -0.3, color: tokens.textStrong }}>
                       {title}
                     </Text>
                   )}

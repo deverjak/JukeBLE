@@ -2,88 +2,90 @@ import { router } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useLang } from '../i18n';
 import { useJukebox } from '../state/JukeboxContext';
 import { useTheme } from '../theme/ThemeContext';
-import { fonts } from '../theme/tokens';
-import { Badge, IconButton } from './ui/primitives';
-import { LiveDot } from './ui/anim';
-
-function Logo() {
-  const { tokens } = useTheme();
-  return (
-    <Text style={{ fontFamily: fonts.sans.semibold, fontSize: 20, letterSpacing: -0.6, color: tokens.fg0 }}>
-      Juke<Text style={{ color: tokens.accentInk }}>NFC</Text>
-    </Text>
-  );
-}
+import { fonts, radii } from '../theme/tokens';
+import { Wordmark } from './Logo';
+import { NfcStatusRow } from './ui/NfcStatus';
+import { IconButton } from './ui/primitives';
 
 /**
- * Screen header: logo (or a custom left slot), NFC status badge that opens the
- * NFC screen, theme toggle, then the big title + mono subtitle.
+ * Screen header: wordmark (or back), language + theme toggles, a settings gear
+ * that opens the NFC/settings screen, the big title + mono subtitle, and (on
+ * tab screens) the tappable NFC reader status row.
  */
 export function AppHeader({
   title,
   sub,
   showBack,
+  showStatus = true,
 }: {
   title: string;
   sub: string;
   showBack?: boolean;
+  showStatus?: boolean;
 }) {
   const { tokens, theme, toggleTheme } = useTheme();
-  const { nfcStatus } = useJukebox();
+  const { lang, toggleLang } = useLang();
+  const { nfcStatus, lastUid } = useJukebox();
   const insets = useSafeAreaInsets();
 
-  const scanning = nfcStatus === 'scanning';
-  const ready = nfcStatus === 'idle';
-  const badgeLabel = scanning ? 'aktivní' : ready ? 'připraveno' : nfcStatus === 'disabled' ? 'NFC vypnuto' : 'bez NFC';
-  const badgeVariant = scanning ? 'ok' : ready ? 'warn' : 'err';
-  const dotColor = scanning ? tokens.accent : ready ? tokens.warn : tokens.error;
-
   return (
-    <View style={{ paddingTop: insets.top + 8, paddingHorizontal: 20, paddingBottom: 14, backgroundColor: tokens.bg0 }}>
+    <View style={{ paddingTop: insets.top + 8, paddingHorizontal: 20, paddingBottom: 12, backgroundColor: tokens.bgPage }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 40 }}>
         {showBack ? (
-          <IconButton
-            name="chevron-left"
-            size={20}
-            color={tokens.fg0}
-            onPress={() => router.back()}
-            style={{ borderWidth: 1, borderColor: tokens.line1 }}
-            accessibilityLabel="Zpět"
-          />
+          <IconButton name="chevron-left" size={20} variant="ghost" onPress={() => router.back()} accessibilityLabel="Back" />
         ) : (
-          <Logo />
+          <Wordmark />
         )}
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <Pressable onPress={() => router.push('/nfc')} hitSlop={6}>
-            <Badge variant={badgeVariant} icon={<LiveDot color={dotColor} pulse={scanning} />}>
-              {badgeLabel}
-            </Badge>
+          <Pressable
+            onPress={toggleLang}
+            hitSlop={6}
+            style={{
+              paddingHorizontal: 12,
+              height: 36,
+              borderRadius: radii.pill,
+              borderWidth: 2,
+              borderColor: tokens.borderMid,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text style={{ fontFamily: fonts.display.semibold, fontSize: 13, letterSpacing: 0.4, color: tokens.textBody }}>
+              {lang.toUpperCase()}
+            </Text>
           </Pressable>
-          <IconButton
-            name={theme === 'dark' ? 'sun' : 'moon'}
-            onPress={toggleTheme}
-            accessibilityLabel="Přepnout motiv"
-          />
+          <IconButton name={theme === 'dark' ? 'sun' : 'moon'} onPress={toggleTheme} accessibilityLabel="Toggle theme" />
+          {!showBack && <IconButton name="settings" onPress={() => router.push('/nfc')} accessibilityLabel="Settings" />}
         </View>
       </View>
-      <View style={{ marginTop: 14 }}>
-        <Text style={{ fontFamily: fonts.sans.medium, fontSize: 30, letterSpacing: -0.6, color: tokens.fg0 }}>
+
+      <View style={{ marginTop: 12 }}>
+        <Text style={{ fontFamily: fonts.display.bold, fontSize: 30, letterSpacing: -0.6, color: tokens.textStrong }}>
           {title}
         </Text>
         <Text
           style={{
             fontFamily: fonts.mono.regular,
             fontSize: 11,
-            letterSpacing: 0.88,
+            letterSpacing: 1.2,
             textTransform: 'uppercase',
-            color: tokens.fg2,
-            marginTop: 7,
+            color: tokens.textFaint,
+            marginTop: 6,
           }}>
           {sub}
         </Text>
       </View>
+
+      {showStatus && !showBack && (
+        <NfcStatusRow
+          state={nfcStatus}
+          lastUid={lastUid}
+          onPress={() => router.push('/nfc')}
+          style={{ marginTop: 14 }}
+        />
+      )}
     </View>
   );
 }

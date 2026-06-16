@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
 import { useTheme } from '../../theme/ThemeContext';
-import { alpha, fonts } from '../../theme/tokens';
+import { alpha, fonts, radii, shadow, tones, type ToneName } from '../../theme/tokens';
 import { Icon, type IconName } from '../Icon';
 
 /* ── Uppercase mono section label ─────────────────────────── */
@@ -17,7 +17,7 @@ export function SectionLabel({
   const { tokens } = useTheme();
   return (
     <View style={[styles.sectionRow, style]}>
-      <Text style={{ fontFamily: fonts.mono.regular, fontSize: 11, letterSpacing: 0.88, textTransform: 'uppercase', color: tokens.fg2 }}>
+      <Text style={{ fontFamily: fonts.mono.regular, fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', color: tokens.textMuted }}>
         {children}
       </Text>
       {right}
@@ -29,8 +29,8 @@ export function SectionLabel({
 export function ConsoleRow({ k, children, first }: { k: string; children: React.ReactNode; first?: boolean }) {
   const { tokens } = useTheme();
   return (
-    <View style={[styles.consoleRow, !first && { borderTopWidth: 1, borderTopColor: tokens.line3 }]}>
-      <Text style={{ fontFamily: fonts.mono.regular, fontSize: 13, color: tokens.fg2, letterSpacing: 0.26 }}>{k}</Text>
+    <View style={[styles.consoleRow, !first && { borderTopWidth: 1, borderTopColor: tokens.borderSoft }]}>
+      <Text style={{ fontFamily: fonts.mono.regular, fontSize: 11.5, letterSpacing: 0.6, textTransform: 'uppercase', color: tokens.textFaint }}>{k}</Text>
       <View style={styles.consoleValue}>{children}</View>
     </View>
   );
@@ -39,64 +39,87 @@ export function ConsoleRow({ k, children, first }: { k: string; children: React.
 export function ConsoleValue({ color, children }: { color?: string; children: React.ReactNode }) {
   const { tokens } = useTheme();
   return (
-    <Text numberOfLines={1} style={{ fontFamily: fonts.mono.regular, fontSize: 13, color: color ?? tokens.fg0 }}>
+    <Text numberOfLines={1} style={{ fontFamily: fonts.mono.regular, fontSize: 13, color: color ?? tokens.textBody }}>
       {children}
     </Text>
   );
 }
 
 /* ── Surface card ─────────────────────────────────────────── */
-export function Card({ style, children }: { style?: StyleProp<ViewStyle>; children: React.ReactNode }) {
+type Pad = 'none' | 'sm' | 'md' | 'lg';
+const PADS: Record<Pad, number> = { none: 0, sm: 16, md: 20, lg: 24 };
+
+export function Card({
+  style,
+  children,
+  pad = 'none',
+  radius = radii.lg,
+  accent,
+  raised,
+}: {
+  style?: StyleProp<ViewStyle>;
+  children: React.ReactNode;
+  pad?: Pad;
+  radius?: number;
+  accent?: ToneName;
+  raised?: boolean;
+}) {
   const { tokens } = useTheme();
   return (
-    <View style={[{ backgroundColor: tokens.bg1, borderWidth: 1, borderColor: tokens.line1, borderRadius: 12 }, style]}>
+    <View
+      style={[
+        {
+          backgroundColor: raised ? tokens.surfaceRaised : tokens.surfaceCard,
+          borderWidth: 1,
+          borderColor: tokens.borderSoft,
+          borderRadius: radius,
+          padding: PADS[pad],
+          overflow: 'hidden',
+        },
+        shadow('md'),
+        style,
+      ]}>
+      {accent && (
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 6, backgroundColor: tones[accent].s500 }} />
+      )}
       {children}
     </View>
   );
 }
 
-/* ── Badge ────────────────────────────────────────────────── */
-export type BadgeVariant = 'default' | 'ok' | 'warn' | 'err';
+/* ── Badge — soft tinted or solid pill ────────────────────── */
+export type BadgeTone = ToneName | 'danger';
 
 export function Badge({
-  variant = 'default',
-  icon,
+  tone = 'grape',
+  solid = false,
+  dot = false,
   children,
   style,
-  textColor,
 }: {
-  variant?: BadgeVariant;
-  icon?: React.ReactNode;
+  tone?: BadgeTone;
+  solid?: boolean;
+  dot?: boolean;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
-  textColor?: string;
 }) {
   const { tokens } = useTheme();
-  const palette = {
-    default: { color: tokens.fg2, border: tokens.line1, bg: 'transparent' },
-    ok: { color: tokens.accentInk, border: alpha(tokens.accent, 0.32), bg: tokens.accentSoft },
-    warn: { color: tokens.warn, border: alpha(tokens.warn, 0.3), bg: tokens.warnSoft },
-    err: { color: tokens.error, border: alpha(tokens.error, 0.3), bg: tokens.errorSoft },
-  }[variant];
+  const scale = tone === 'danger' ? { s500: tokens.danger, s600: tokens.dangerStrong, s300: alpha(tokens.danger, 0.22) } : tones[tone];
+  const fg = solid ? '#fff' : tone === 'danger' ? tokens.danger : scale.s600;
+  const bg = solid ? scale.s500 : tone === 'danger' ? alpha(tokens.danger, 0.16) : tones[tone].s300;
   return (
-    <View style={[styles.badge, { borderColor: palette.border, backgroundColor: palette.bg }, style]}>
-      {icon}
-      <Text
-        numberOfLines={1}
-        style={{
-          fontFamily: fonts.mono.regular,
-          fontSize: 10,
-          letterSpacing: 0.8,
-          textTransform: 'uppercase',
-          color: textColor ?? palette.color,
-        }}>
+    <View style={[styles.badge, { backgroundColor: bg }, style]}>
+      {dot && <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: solid ? '#fff' : scale.s500 }} />}
+      <Text numberOfLines={1} style={{ fontFamily: fonts.body.bold, fontSize: 11, letterSpacing: 0.6, textTransform: 'uppercase', color: fg }}>
         {children}
       </Text>
     </View>
   );
 }
 
-/* ── Icon button ──────────────────────────────────────────── */
+/* ── Round icon button ────────────────────────────────────── */
+const IB_SIZES = { sm: 36, md: 44, lg: 56 };
+
 export function IconButton({
   name,
   size = 19,
@@ -104,6 +127,9 @@ export function IconButton({
   color,
   style,
   accessibilityLabel,
+  variant = 'ghost',
+  tone = 'grape',
+  dim = 'md',
 }: {
   name: IconName;
   size?: number;
@@ -111,19 +137,37 @@ export function IconButton({
   color?: string;
   style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
+  variant?: 'solid' | 'soft' | 'ghost';
+  tone?: ToneName;
+  dim?: keyof typeof IB_SIZES;
 }) {
   const { tokens } = useTheme();
+  const d = IB_SIZES[dim];
+  const variants = {
+    solid: { bg: tones[tone].s500, fg: '#fff', border: 'transparent' },
+    soft: { bg: tokens.brandSoft, fg: tokens.brandStrong, border: 'transparent' },
+    ghost: { bg: 'transparent', fg: color ?? tokens.textBody, border: tokens.borderMid },
+  }[variant];
   return (
     <Pressable
       onPress={onPress}
       accessibilityLabel={accessibilityLabel}
       hitSlop={6}
       style={({ pressed }) => [
-        styles.iconBtn,
-        pressed && { backgroundColor: tokens.bg2, transform: [{ scale: 0.94 }] },
+        {
+          width: d,
+          height: d,
+          borderRadius: radii.pill,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: variants.bg,
+          borderWidth: variant === 'ghost' ? 2 : 0,
+          borderColor: variants.border,
+        },
+        pressed && { transform: [{ scale: 0.9 }] },
         style,
       ]}>
-      <Icon name={name} size={size} color={color ?? tokens.fg1} />
+      <Icon name={name} size={size} color={color ?? variants.fg} />
     </Pressable>
   );
 }
@@ -134,62 +178,65 @@ export function Radio({ on }: { on: boolean }) {
   return (
     <View
       style={{
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        borderWidth: 1.5,
-        borderColor: on ? tokens.accent : tokens.line2,
+        width: 22,
+        height: 22,
+        borderRadius: 11,
+        borderWidth: 2,
+        borderColor: on ? tokens.brand : tokens.borderStrong,
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      {on && <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tokens.accent }} />}
+      {on && <View style={{ width: 11, height: 11, borderRadius: 6, backgroundColor: tokens.brand }} />}
     </View>
   );
 }
 
-/* ── Empty state ──────────────────────────────────────────── */
+/* ── Empty state — white-on-color rounded tile ────────────── */
 export function EmptyState({
   icon,
   title,
   body,
   action,
+  tone = 'grape',
 }: {
   icon: IconName;
   title: string;
   body: string;
   action?: React.ReactNode;
+  tone?: ToneName;
 }) {
   const { tokens } = useTheme();
   return (
     <View style={styles.empty}>
       <View
-        style={{
-          width: 64,
-          height: 64,
-          borderRadius: 16,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: tokens.bg1,
-          borderWidth: 1,
-          borderColor: tokens.line1,
-          marginBottom: 18,
-        }}>
-        <Icon name={icon} size={28} color={tokens.fg3} />
+        style={[
+          {
+            width: 72,
+            height: 72,
+            borderRadius: radii.xl,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: tones[tone].s500,
+            marginBottom: 18,
+          },
+          shadow('md'),
+        ]}>
+        <Icon name={icon} size={32} color="#fff" />
       </View>
-      <Text style={{ fontFamily: fonts.sans.medium, fontSize: 17, color: tokens.fg0 }}>{title}</Text>
+      <Text style={{ fontFamily: fonts.display.semibold, fontSize: 20, color: tokens.textStrong }}>{title}</Text>
       <Text
         style={{
-          fontFamily: fonts.sans.regular,
-          fontSize: 13.5,
-          color: tokens.fg2,
+          fontFamily: fonts.body.regular,
+          fontSize: 15,
+          color: tokens.textMuted,
           marginTop: 8,
           maxWidth: 280,
-          lineHeight: 20,
+          lineHeight: 22,
           textAlign: 'center',
         }}>
         {body}
       </Text>
-      {action && <View style={{ marginTop: 18 }}>{action}</View>}
+      {action && <View style={{ marginTop: 20 }}>{action}</View>}
     </View>
   );
 }
@@ -212,12 +259,12 @@ export function Row({
   const base: StyleProp<ViewStyle> = [
     styles.row,
     alignTop && { alignItems: 'flex-start' },
-    !first && { borderTopWidth: 1, borderTopColor: tokens.line3 },
+    !first && { borderTopWidth: 1, borderTopColor: tokens.borderSoft },
     style,
   ];
   if (onPress) {
     return (
-      <Pressable onPress={onPress} style={({ pressed }) => [base, pressed && { backgroundColor: tokens.bg2 }]}>
+      <Pressable onPress={onPress} style={({ pressed }) => [base, pressed && { backgroundColor: tokens.surfaceSunken }]}>
         {children}
       </Pressable>
     );
@@ -225,7 +272,7 @@ export function Row({
   return <View style={base}>{children}</View>;
 }
 
-export const monoText = (color: string, size = 11): TextStyle => ({
+export const monoText = (color: string, size = 11.5): TextStyle => ({
   fontFamily: fonts.mono.regular,
   fontSize: size,
   color,
@@ -236,13 +283,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   consoleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 12,
+    paddingVertical: 11,
   },
   consoleValue: {
     flexDirection: 'row',
@@ -255,17 +302,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     paddingVertical: 5,
-    paddingHorizontal: 9,
-    borderRadius: 5,
-    borderWidth: 1,
+    paddingHorizontal: 11,
+    borderRadius: radii.pill,
     alignSelf: 'flex-start',
-  },
-  iconBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 9,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   row: {
     flexDirection: 'row',
@@ -275,7 +314,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   empty: {
-    paddingVertical: 52,
+    paddingVertical: 54,
     paddingHorizontal: 24,
     alignItems: 'center',
   },
