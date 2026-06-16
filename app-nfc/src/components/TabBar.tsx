@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useT } from '../i18n';
 import { useJukebox } from '../state/JukeboxContext';
 import { useTheme } from '../theme/ThemeContext';
-import { fonts, radii } from '../theme/tokens';
+import { fonts } from '../theme/tokens';
 import { Icon, type IconName } from './Icon';
 import { Sheet } from './Sheet';
 import { Button } from './ui/Button';
@@ -84,7 +84,8 @@ export function TabBar({ state, navigation }: BottomTabBarProps) {
                 style={{
                   width: 52,
                   height: 30,
-                  borderRadius: radii.pill,
+                  borderRadius: 15,
+                  overflow: 'hidden',
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: active ? tokens.brandSoft : 'transparent',
