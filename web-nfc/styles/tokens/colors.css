@@ -1,0 +1,131 @@
+/* ============================================================
+   JukeNFC · Color tokens
+   A bright "sound-card" palette. Each card maps to a sound, so
+   the brand leans on a set of joyful, saturated hues — one per
+   card — anchored by a grape-violet primary.
+   ============================================================ */
+
+:root {
+  /* ---- Brand: the sound-card palette ---- */
+  --grape-50:  #f3efff;
+  --grape-100: #e6ddff;
+  --grape-200: #cdbcff;
+  --grape-300: #ab93ff;
+  --grape-400: #8b6bf8;
+  --grape-500: #6c4cf1;  /* primary */
+  --grape-600: #5639d6;
+  --grape-700: #432aad;
+  --grape-800: #2f1d7a;
+
+  --tangerine-300: #ffc1a0;
+  --tangerine-400: #ff9b62;
+  --tangerine-500: #ff7a3d;  /* orange card */
+  --tangerine-600: #e85f22;
+
+  --sunshine-300: #ffe39a;
+  --sunshine-400: #ffd45c;
+  --sunshine-500: #ffc23d;   /* yellow card */
+  --sunshine-600: #eaa514;
+
+  --mint-300: #8af0dc;
+  --mint-400: #41dcc0;
+  --mint-500: #1fc8a9;       /* green card */
+  --mint-600: #11a78c;
+
+  --sky-300: #a8d6ff;
+  --sky-400: #6bbcff;
+  --sky-500: #3da5ff;        /* blue card */
+  --sky-600: #1f84e0;
+
+  --bubblegum-300: #ffb6da;
+  --bubblegum-400: #ff8cc4;
+  --bubblegum-500: #ff6fb5;  /* pink card */
+  --bubblegum-600: #e84a98;
+
+  /* ---- Warm neutrals (light) ---- */
+  --cream:     #fff8ee;   /* page background */
+  --paper:     #fffdf8;   /* card surface */
+  --sand-100:  #f6ecdd;
+  --sand-200:  #ece0cd;
+  --sand-300:  #ddccb2;
+
+  --ink-900: #221b33;     /* primary text – deep plum */
+  --ink-700: #463a5e;
+  --ink-500: #6e6286;
+  --ink-300: #9b90b0;
+
+  /* ---- Plum-black neutrals (dark / app) ---- */
+  --night-900: #15121f;   /* app background */
+  --night-800: #1c1830;
+  --night-700: #241e3a;   /* surface */
+  --night-600: #2e2748;   /* elevated */
+  --night-500: #3c3460;
+  --night-400: #564d7d;
+
+  /* ---- Semantic hues ---- */
+  --success: var(--mint-500);
+  --warning: var(--sunshine-500);
+  --danger:  #ff4d6d;
+  --danger-600: #e23357;
+  --info:    var(--sky-500);
+
+  /* ---- NFC reader status ---- */
+  --status-listening:  var(--mint-500);
+  --status-ready:      var(--sky-500);
+  --status-disabled:   var(--ink-300);
+  --status-unsupported:var(--danger);
+
+  /* ============================================================
+     Semantic aliases — LIGHT (marketing site default)
+     ============================================================ */
+  --bg-page:        var(--cream);
+  --bg-subtle:      var(--sand-100);
+  --surface-card:   var(--paper);
+  --surface-raised: #ffffff;
+  --surface-sunken: var(--sand-100);
+
+  --text-strong:  var(--ink-900);
+  --text-body:    var(--ink-700);
+  --text-muted:   var(--ink-500);
+  --text-faint:   var(--ink-300);
+  --text-on-brand:#ffffff;
+
+  --border-soft:  rgba(34, 27, 51, 0.08);
+  --border-mid:   rgba(34, 27, 51, 0.14);
+  --border-strong:rgba(34, 27, 51, 0.24);
+
+  --brand:        var(--grape-500);
+  --brand-strong: var(--grape-600);
+  --brand-soft:   var(--grape-100);
+  --on-brand:     #ffffff;
+
+  --focus-ring:   var(--grape-400);
+}
+
+/* ============================================================
+   Dark theme — the app is dark-first. Apply on [data-theme="dark"].
+   ============================================================ */
+[data-theme="dark"] {
+  --bg-page:        var(--night-900);
+  --bg-subtle:      var(--night-800);
+  --surface-card:   var(--night-700);
+  --surface-raised: var(--night-600);
+  --surface-sunken: var(--night-800);
+
+  --text-strong:  #f4f0fb;
+  --text-body:    #d8d0ea;
+  --text-muted:   #9a90b6;
+  --text-faint:   #6c6388;
+  --text-on-brand:#ffffff;
+
+  --border-soft:  rgba(255, 255, 255, 0.07);
+  --border-mid:   rgba(255, 255, 255, 0.12);
+  --border-strong:rgba(255, 255, 255, 0.22);
+
+  --brand:        var(--grape-400);
+  --brand-strong: var(--grape-300);
+  --brand-soft:   rgba(108, 76, 241, 0.22);
+  --on-brand:     #ffffff;
+
+  --focus-ring:   var(--grape-300);
+}

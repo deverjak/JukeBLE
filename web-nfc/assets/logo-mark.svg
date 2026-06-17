@@ -1,0 +1,18 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="JukeNFC">
+  <defs>
+    <linearGradient id="jnfcCard" x1="20" y1="16" x2="96" y2="104" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8b6bf8"></stop>
+      <stop offset="1" stop-color="#6c4cf1"></stop>
+    </linearGradient>
+  </defs>
+  
+  <rect x="20" y="20" width="68" height="84" rx="18" transform="rotate(-7 54 62)" fill="url(#jnfcCard)"></rect>
+  <rect x="20" y="20" width="68" height="84" rx="18" transform="rotate(-7 54 62)" fill="#000" opacity="0.06" style="mix-blend-mode:multiply"></rect>
+  
+  <path d="M44 47l21 14-21 14z" transform="rotate(-7 54 62)" fill="#fff"></path>
+  
+  <g stroke="#ffc23d" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M92 44a18 18 0 0 1 0 34"></path>
+    <path d="M101 34a32 32 0 0 1 0 54"></path>
+  </g>
+</svg>
