@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-pp="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JukeNFC — Zásady ochrany soukromí / Privacy Policy</title>
+<meta name="description" content="Zásady ochrany soukromí aplikace JukeNFC. Žádný sběr dat, žádné účty, žádné servery — vše zůstává ve vašem telefonu. · JukeNFC privacy policy: no data collection, no accounts, fully on-device." />
+<meta name="theme-color" content="#6c4cf1" />
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/logo-mark.svg" />
+<link rel="canonical" href="https://jukenfc.app/privacy" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" />
+
+<!-- Design tokens + page styles -->
+<link rel="stylesheet" href="styles/tokens/colors.css" />
+<link rel="stylesheet" href="styles/tokens/typography.css" />
+<link rel="stylesheet" href="styles/tokens/spacing.css" />
+<link rel="stylesheet" href="styles/app.css" />
+
+<style>
+  /* ---- Privacy page — long-form legal layout on the shared tokens ---- */
+  .pp-hero { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--grape-50), var(--cream)); border-bottom: 1px solid var(--border-soft); }
+  .pp-hero .inner { position: relative; max-width: 820px; margin: 0 auto; padding: 64px 28px 52px; }
+  .pp-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.025em; color: var(--ink-900); margin: 18px 0 0; line-height: 1.02; }
+  .pp-hero .sub { font-family: var(--font-body); font-size: 19px; line-height: 1.55; color: var(--text-body); max-width: 620px; margin: 16px 0 0; font-weight: 500; }
+  .pp-updated { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); }
+  .pp-updated .ico { color: var(--grape-500); }
+
+  .pp-summary { max-width: 820px; margin: 0 auto; padding: 36px 28px 4px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .pp-sum { display: flex; gap: 14px; background: var(--surface-card); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 18px; }
+  .pp-sum .ico-chip { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--grape-100); color: var(--grape-600); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .pp-sum h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--text-strong); margin: 0 0 4px; line-height: 1.15; }
+  .pp-sum p { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--text-body); margin: 0; }
+
+  .pp-body { max-width: 820px; margin: 0 auto; padding: 44px 28px 84px; }
+  .pp-section { margin-top: 38px; }
+  .pp-section:first-child { margin-top: 0; }
+  .pp-section h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 28px); letter-spacing: -0.01em; color: var(--ink-900); margin: 0 0 12px; line-height: 1.18; }
+  .pp-section p { font-family: var(--font-body); font-size: 16px; line-height: 1.65; color: var(--text-body); margin: 0 0 12px; }
+  .pp-section ul { margin: 0 0 12px; padding-left: 0; list-style: none; }
+  .pp-section li { position: relative; font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--text-body); padding-left: 26px; margin-bottom: 10px; }
+  .pp-section li::before { content: ""; position: absolute; left: 4px; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--grape-400); }
+  .pp-section a { color: var(--grape-600); font-weight: 700; text-decoration: none; }
+  .pp-section a:hover { text-decoration: underline; }
+  .pp-section strong { color: var(--text-strong); }
+  .pp-callout { background: var(--grape-50); border: 1px solid var(--grape-100); border-left: 4px solid var(--grape-500); border-radius: var(--radius-md); padding: 18px 20px; margin: 6px 0 0; }
+  .pp-callout p { margin: 0; color: var(--ink-700); font-weight: 600; }
+
+  /* language switch — driven by [data-pp] on <html>, kept in sync with the nav picker */
+  html[data-pp="cs"] [data-lang-content="en"],
+  html[data-pp="en"] [data-lang-content="cs"] { display: none; }
+
+  @media (max-width: 560px) { .pp-summary { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     Icon sprite — subset used by this page.
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-audio-lines" viewBox="0 0 24 24"><path d="M4 10v4M8 6.5v11M12 9v6M16 4.5v15M20 10v4" /></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-width="2.6" /></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" /></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none" /></symbol>
+  <symbol id="i-wifi-off" viewBox="0 0 24 24">
+    <path d="M3 3l18 18" />
+    <path d="M8.5 15.2a5 5 0 0 1 6.8-.4" />
+    <path d="M5 11.6a11 11 0 0 1 3.4-2.2M13.5 8.6a11 11 0 0 1 5.9 3" />
+    <circle cx="12" cy="18.6" r="1.1" fill="currentColor" stroke="none" />
+  </symbol>
+  <symbol id="i-user-x" viewBox="0 0 24 24">
+    <circle cx="9" cy="8" r="3.5" />
+    <path d="M3.5 20a6 6 0 0 1 11-3.2" />
+    <path d="M16.5 9l4.5 4.5M21 9l-4.5 4.5" />
+  </symbol>
+  <symbol id="i-monitor-smartphone" viewBox="0 0 24 24">
+    <rect x="2.5" y="4.5" width="12.5" height="9" rx="1.6" />
+    <path d="M6.5 17.5h4.5" />
+    <rect x="15" y="9" width="6.5" height="11" rx="1.6" />
+  </symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></symbol>
+  <symbol id="i-nfc" viewBox="0 0 24 24">
+    <path d="M5 9a6 6 0 0 1 0 6" />
+    <path d="M9 6a11 11 0 0 1 0 12" />
+    <path d="M13 3.5a16 16 0 0 1 0 17" />
+  </symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 7.8-7 9-4-1.2-7-4.4-7-9V6z" /><path d="M9 12l2 2 4-4" /></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M11 6l-6 6 6 6" /><path d="M5 12h14" /></symbol>
+</defs></svg>
+
+<!-- ============================================================ NAV ============================================================ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html" aria-label="JukeNFC home">
+      <img src="assets/logo-mark.svg" width="40" height="40" alt="" />
+      <span class="logo-word"><span class="j">Juke</span><span class="n">NFC</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#how" data-i18n="nav.how">How it works</a>
+      <a href="index.html#private" data-i18n="nav.private">Private by design</a>
+      <a href="index.html#use" data-i18n="nav.use">Use cases</a>
+      <a href="index.html#features" data-i18n="nav.features">Features</a>
+    </div>
+    <div class="nav-actions">
+      <span class="badge badge-mint"><span class="dot"></span><span data-i18n="nav.android">Android</span></span>
+      <div class="lang" data-lang-picker>
+        <button type="button" class="lang-btn" data-lang-toggle aria-haspopup="true" aria-label="Language">
+          <svg class="ico" width="15" height="15" style="color:var(--grape-500)"><use href="#i-audio-lines" /></svg>
+          <span data-lang-label>EN</span>
+          <svg class="ico chev" width="14" height="14"><use href="#i-chevron-down" /></svg>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button type="button" class="lang-opt" data-lang="en" role="menuitem">
+            <span class="left"><span class="code">EN</span>English</span>
+            <svg class="ico check" width="16" height="16"><use href="#i-check" /></svg>
+          </button>
+          <button type="button" class="lang-opt" data-lang="cs" role="menuitem">
+            <span class="left"><span class="code">CS</span>Čeština</span>
+            <svg class="ico check" width="16" height="16"><use href="#i-check" /></svg>
+          </button>
+        </div>
+      </div>
+      <a class="btn btn-sm btn-grape" href="https://play.google.com/store/apps/details?id=cz.chytredigital.jukenfc" target="_blank" rel="noopener noreferrer">
+        <svg class="ico" width="16" height="16"><use href="#i-play" /></svg>
+        <span data-i18n="nav.getApp">Get the app</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================ CZECH ============================================================ -->
+<main data-lang-content="cs">
+  <header class="pp-hero">
+    <div class="blob" style="width:420px;height:420px;background:var(--grape-300);opacity:.22;filter:blur(70px);top:-160px;right:-100px"></div>
+    <div class="blob" style="width:360px;height:360px;background:var(--mint-300);opacity:.2;filter:blur(70px);bottom:-200px;left:-120px"></div>
+    <div class="inner">
+      <span class="eyebrow-pill">
+        <svg class="ico" width="16" height="16"><use href="#i-shield" /></svg>
+        <span>Soukromí</span>
+      </span>
+      <h1>Zásady ochrany soukromí</h1>
+      <p class="sub">JukeNFC je navržené tak, aby vaše data nikdy neopustila telefon. Žádné účty, žádné servery, žádné sledování. Tady je přesně, jak to funguje.</p>
+      <span class="pp-updated">
+        <svg class="ico" width="14" height="14"><use href="#i-lock" /></svg>
+        Naposledy aktualizováno 18. června 2026
+      </span>
+    </div>
+  </header>
+
+  <section class="pp-summary">
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-user-x" /></svg></span>
+      <div><h3>Žádný sběr dat</h3><p>Neshromažďujeme o vás žádné osobní údaje. Vůbec žádné.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-monitor-smartphone" /></svg></span>
+      <div><h3>Všechno v zařízení</h3><p>Karty, zvuky i nastavení zůstávají v lokální databázi ve vašem telefonu.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-lock" /></svg></span>
+      <div><h3>Bez účtu a přihlašování</h3><p>Žádná registrace, žádný e-mail, žádné heslo.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-wifi-off" /></svg></span>
+      <div><h3>Funguje offline</h3><p>K přehrávání není potřeba internet a aplikace vaše data nikam neposílá.</p></div>
+    </div>
+  </section>
+
+  <div class="pp-body">
+    <div class="pp-section">
+      <h2>1. Kdo jsme</h2>
+      <p>Tyto zásady ochrany soukromí popisují, jak mobilní aplikace JukeNFC („aplikace“, „my“, „naše“) zachází s vašimi údaji. Aplikaci pro Android (identifikátor <strong>cz.chytredigital.jukenfc</strong>) vyvíjí Chytré Digital. Používáním aplikace souhlasíte s těmito zásadami.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>2. Stručně řečeno</h2>
+      <div class="pp-callout"><p>JukeNFC funguje výhradně ve vašem zařízení. Aplikace neshromažďuje, neodesílá ani nesdílí žádné osobní údaje. Nemá uživatelské účty a nepoužívá analytiku, reklamy ani nástroje pro sledování.</p></div>
+    </div>
+
+    <div class="pp-section">
+      <h2>3. Jaká data aplikace ukládá ve vašem zařízení</h2>
+      <p>Aby aplikace fungovala, ukládá lokálně — pouze ve vašem telefonu — tyto údaje:</p>
+      <ul>
+        <li>Identifikátory (UID) NFC karet, které zaregistrujete. Slouží k rozpoznání karty a přiřazení zvuku.</li>
+        <li>Zvukové soubory, které si sami vyberete (MP3, WAV, M4A). Kopie souboru se uloží do úložiště aplikace.</li>
+        <li>Názvy a nastavení, která kartám přiřadíte (např. jméno karty, hlasitost, předvolby přehrávání).</li>
+      </ul>
+      <p>Tato data jsou uložena v lokální databázi a souborovém úložišti aplikace. Neopouštějí vaše zařízení a my k nim nemáme přístup.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>4. Oprávnění a proč je aplikace potřebuje</h2>
+      <p>Aplikace používá tato systémová oprávnění Androidu:</p>
+      <ul>
+        <li><strong>NFC</strong> — k načtení jedinečného ID (UID) přiložené NFC karty. Aplikace čte pouze identifikátor karty, nezapisuje na karty ani nečte jejich další obsah.</li>
+        <li><strong>Přehrávání na pozadí a ponechání obrazovky zapnuté</strong> — aby zvuk hrál i při zhasnuté obrazovce nebo na pozadí a aby fungoval režim kiosku (oprávnění pro službu na popředí, podržení procesoru a nastavení zvukového výstupu).</li>
+      </ul>
+      <p>Zvukové soubory vybíráte přes systémový výběr souborů Androidu — aplikace tak získá jen soubory, které sami zvolíte, a <strong>nepotřebuje žádný přístup k vašemu úložišti ani knihovně médií</strong>.</p>
+      <p>Žádné z těchto oprávnění není použito ke sběru nebo odesílání vašich dat.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>5. Co neshromažďujeme a nesdílíme</h2>
+      <p>Neshromažďujeme jména, e-maily, polohu, kontakty ani reklamní identifikátory. Nepoužíváme cookies, analytické SDK ani reklamní sítě. Vaše data neprodáváme ani nesdílíme s třetími stranami — protože k nim vůbec nemáme přístup.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>6. Internet a aktualizace</h2>
+      <p>Aplikace ke svým funkcím nepotřebuje připojení k internetu a vaše data sama o sobě nikam neodesílá. Aktualizace aplikace zajišťuje obchod Google Play prostřednictvím služeb Google Play; na tento proces se vztahují <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">zásady ochrany soukromí společnosti Google</a>. Stažení a instalaci aplikace z Google Play rovněž zpracovává Google podle svých zásad.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>7. Soukromí dětí</h2>
+      <p>JukeNFC je vhodné i pro děti (např. mluvící kartičky). Protože aplikace neshromažďuje žádné osobní údaje, neshromažďujeme vědomě ani údaje o dětech.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>8. Uchovávání a smazání dat</h2>
+      <p>Vaše data zůstávají ve vašem zařízení, dokud je nesmažete. Jednotlivé karty a zvuky můžete kdykoli odstranit přímo v aplikaci. Odinstalováním aplikace se odstraní všechna její lokální data, včetně zaregistrovaných karet a importovaných zvukových souborů.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>9. Změny těchto zásad</h2>
+      <p>Tyto zásady můžeme čas od času aktualizovat. Aktuální verze bude vždy dostupná na této adrese a změníme datum „Naposledy aktualizováno“ uvedené výše.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>10. Kontakt</h2>
+      <p>Máte-li dotazy k těmto zásadám nebo k ochraně soukromí v aplikaci, napište nám na <a href="mailto:kuba.devera@seznam.cz">kuba.devera@seznam.cz</a>.</p>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================ ENGLISH ============================================================ -->
+<main data-lang-content="en">
+  <header class="pp-hero">
+    <div class="blob" style="width:420px;height:420px;background:var(--grape-300);opacity:.22;filter:blur(70px);top:-160px;right:-100px"></div>
+    <div class="blob" style="width:360px;height:360px;background:var(--mint-300);opacity:.2;filter:blur(70px);bottom:-200px;left:-120px"></div>
+    <div class="inner">
+      <span class="eyebrow-pill">
+        <svg class="ico" width="16" height="16"><use href="#i-shield" /></svg>
+        <span>Privacy</span>
+      </span>
+      <h1>Privacy Policy</h1>
+      <p class="sub">JukeNFC is built so your data never leaves your phone. No accounts, no servers, no tracking. Here’s exactly how it works.</p>
+      <span class="pp-updated">
+        <svg class="ico" width="14" height="14"><use href="#i-lock" /></svg>
+        Last updated 18 June 2026
+      </span>
+    </div>
+  </header>
+
+  <section class="pp-summary">
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-user-x" /></svg></span>
+      <div><h3>No data collection</h3><p>We don’t collect any personal data about you. None at all.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-monitor-smartphone" /></svg></span>
+      <div><h3>Everything on-device</h3><p>Your cards, sounds and settings stay in a local database on your phone.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-lock" /></svg></span>
+      <div><h3>No account, no login</h3><p>No sign-up, no email, no password.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-wifi-off" /></svg></span>
+      <div><h3>Works offline</h3><p>No internet is needed to play, and the app never sends your data anywhere.</p></div>
+    </div>
+  </section>
+
+  <div class="pp-body">
+    <div class="pp-section">
+      <h2>1. Who we are</h2>
+      <p>This privacy policy explains how the JukeNFC mobile app (“the app”, “we”, “our”) handles your information. The Android app (identifier <strong>cz.chytredigital.jukenfc</strong>) is developed by Chytré Digital. By using the app you agree to this policy.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>2. The short version</h2>
+      <div class="pp-callout"><p>JukeNFC runs entirely on your device. The app does not collect, transmit or share any personal data. It has no user accounts and uses no analytics, ads or tracking tools.</p></div>
+    </div>
+
+    <div class="pp-section">
+      <h2>3. What the app stores on your device</h2>
+      <p>To work, the app stores the following locally — on your phone only:</p>
+      <ul>
+        <li>The IDs (UIDs) of the NFC cards you register, used to recognise a card and match it to a sound.</li>
+        <li>The audio files you choose yourself (MP3, WAV, M4A). A copy of the file is saved into the app’s storage.</li>
+        <li>Names and settings you assign to cards (e.g. card name, volume, playback preferences).</li>
+      </ul>
+      <p>This data lives in the app’s local database and file storage. It never leaves your device and we have no access to it.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>4. Permissions and why the app needs them</h2>
+      <p>The app uses these Android system permissions:</p>
+      <ul>
+        <li><strong>NFC</strong> — to read the unique ID (UID) of a tapped NFC card. The app only reads the card’s identifier; it does not write to cards or read their other contents.</li>
+        <li><strong>Background playback and keep-screen-awake</strong> — so audio keeps playing with the screen off or in the background and kiosk mode works (foreground-service, wake-lock and audio-output settings permissions).</li>
+      </ul>
+      <p>You choose sound files through Android’s system file picker, so the app only receives the files you select and <strong>needs no access to your storage or media library</strong>.</p>
+      <p>None of these permissions are used to collect or transmit your data.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>5. What we don’t collect or share</h2>
+      <p>We don’t collect names, emails, location, contacts or advertising identifiers. We use no cookies, analytics SDKs or ad networks. We don’t sell or share your data with third parties — because we have no access to it in the first place.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>6. Internet and updates</h2>
+      <p>The app needs no internet connection for its features and does not send your data anywhere by itself. App updates are delivered by the Google Play Store through Google Play services; that process is covered by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google’s privacy policy</a>. Downloading and installing the app from Google Play is likewise handled by Google under its own policies.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>7. Children’s privacy</h2>
+      <p>JukeNFC is suitable for children (e.g. talking flashcards). Because the app collects no personal data, we do not knowingly collect data from children either.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>8. Data retention and deletion</h2>
+      <p>Your data stays on your device until you delete it. You can remove individual cards and sounds at any time inside the app. Uninstalling the app deletes all of its local data, including registered cards and imported audio files.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>9. Changes to this policy</h2>
+      <p>We may update this policy from time to time. The current version will always be available at this address, and we’ll update the “Last updated” date shown above.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>10. Contact</h2>
+      <p>If you have questions about this policy or privacy in the app, email us at <a href="mailto:kuba.devera@seznam.cz">kuba.devera@seznam.cz</a>.</p>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================ FOOTER ============================================================ -->
+<footer class="footer">
+  <div class="cols">
+    <div>
+      <a class="logo" href="index.html" aria-label="JukeNFC home">
+        <img src="assets/logo-mark.svg" width="40" height="40" alt="" />
+        <span class="logo-word"><span style="color:#fff">Juke</span><span style="color:var(--grape-300)">NFC</span></span>
+      </a>
+      <p class="tagline" data-i18n="footer.tagline">The mobile NFC jukebox. Tap a card, hear a sound — no extra hardware.</p>
+    </div>
+    <div class="col">
+      <div class="col-h" data-i18n="footer.cols.0.0">Product</div>
+      <a href="index.html#how" data-i18n="footer.cols.0.1.0">How it works</a>
+      <a href="index.html#private" data-i18n="footer.cols.0.1.1">Private by design</a>
+      <a href="index.html#use" data-i18n="footer.cols.0.1.2">Use cases</a>
+      <a href="index.html#features" data-i18n="footer.cols.0.1.3">Features</a>
+      <a href="https://play.google.com/store/apps/details?id=cz.chytredigital.jukenfc" target="_blank" rel="noopener noreferrer" data-i18n="footer.cols.0.1.4">Download</a>
+    </div>
+    <div class="col">
+      <div class="col-h" data-i18n="footer.cols.1.0">Support</div>
+      <a href="index.html#how" data-i18n="footer.cols.1.1.0">Help</a>
+      <a href="index.html#features" data-i18n="footer.cols.1.1.1">FAQ</a>
+      <a href="mailto:kuba.devera@seznam.cz" data-i18n="footer.cols.1.1.2">Contact</a>
+    </div>
+    <div class="col">
+      <div class="col-h" data-i18n="footer.cols.2.0">Legal</div>
+      <a href="privacy.html" data-i18n="footer.cols.2.1.0">Privacy</a>
+      <a href="terms.html" data-i18n="footer.cols.2.1.1">Terms</a>
+    </div>
+  </div>
+  <div class="bottom">
+    <span data-i18n="footer.copyright">© 2026 JukeNFC. Made for tappers everywhere.</span>
+    <span class="offline"><svg class="ico" width="15" height="15"><use href="#i-wifi-off" /></svg><span data-i18n="footer.offline">Works fully offline</span></span>
+  </div>
+</footer>
+
+<script src="js/strings.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* Keep the privacy-page body language in sync with the shared nav picker.
+   js/app.js handles the nav/footer strings, the dropdown and persistence
+   (localStorage key "jukenfc_lang"); here we only flip the <html data-pp>
+   attribute that shows the matching CS / EN <main>. */
+(function () {
+  'use strict';
+  var KEY = 'jukenfc_lang', DEFAULT = 'en';
+  function setLang(lang) {
+    if (lang !== 'cs' && lang !== 'en') lang = DEFAULT;
+    document.documentElement.setAttribute('data-pp', lang);
+  }
+  function init() {
+    var lang = DEFAULT;
+    try { lang = localStorage.getItem(KEY) || DEFAULT; } catch (e) {}
+    setLang(lang);
+    document.querySelectorAll('[data-lang]').forEach(function (opt) {
+      opt.addEventListener('click', function () { setLang(opt.getAttribute('data-lang')); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

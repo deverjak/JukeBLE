@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-pp="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JukeNFC — Podmínky použití / Terms of Use</title>
+<meta name="description" content="Podmínky použití aplikace JukeNFC — bezplatná, offline aplikace poskytovaná „tak, jak je“. · JukeNFC terms of use: free, offline app provided as-is." />
+<meta name="theme-color" content="#6c4cf1" />
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/logo-mark.svg" />
+<link rel="canonical" href="https://jukenfc.app/terms" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" />
+
+<!-- Design tokens + page styles -->
+<link rel="stylesheet" href="styles/tokens/colors.css" />
+<link rel="stylesheet" href="styles/tokens/typography.css" />
+<link rel="stylesheet" href="styles/tokens/spacing.css" />
+<link rel="stylesheet" href="styles/app.css" />
+
+<style>
+  /* ---- Legal page — long-form layout on the shared tokens (shared with privacy.html) ---- */
+  .pp-hero { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--grape-50), var(--cream)); border-bottom: 1px solid var(--border-soft); }
+  .pp-hero .inner { position: relative; max-width: 820px; margin: 0 auto; padding: 64px 28px 52px; }
+  .pp-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.025em; color: var(--ink-900); margin: 18px 0 0; line-height: 1.02; }
+  .pp-hero .sub { font-family: var(--font-body); font-size: 19px; line-height: 1.55; color: var(--text-body); max-width: 620px; margin: 16px 0 0; font-weight: 500; }
+  .pp-updated { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); }
+  .pp-updated .ico { color: var(--grape-500); }
+
+  .pp-summary { max-width: 820px; margin: 0 auto; padding: 36px 28px 4px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .pp-sum { display: flex; gap: 14px; background: var(--surface-card); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 18px; }
+  .pp-sum .ico-chip { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--grape-100); color: var(--grape-600); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .pp-sum h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--text-strong); margin: 0 0 4px; line-height: 1.15; }
+  .pp-sum p { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--text-body); margin: 0; }
+
+  .pp-body { max-width: 820px; margin: 0 auto; padding: 44px 28px 84px; }
+  .pp-section { margin-top: 38px; }
+  .pp-section:first-child { margin-top: 0; }
+  .pp-section h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 28px); letter-spacing: -0.01em; color: var(--ink-900); margin: 0 0 12px; line-height: 1.18; }
+  .pp-section p { font-family: var(--font-body); font-size: 16px; line-height: 1.65; color: var(--text-body); margin: 0 0 12px; }
+  .pp-section ul { margin: 0 0 12px; padding-left: 0; list-style: none; }
+  .pp-section li { position: relative; font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--text-body); padding-left: 26px; margin-bottom: 10px; }
+  .pp-section li::before { content: ""; position: absolute; left: 4px; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--grape-400); }
+  .pp-section a { color: var(--grape-600); font-weight: 700; text-decoration: none; }
+  .pp-section a:hover { text-decoration: underline; }
+  .pp-section strong { color: var(--text-strong); }
+  .pp-callout { background: var(--grape-50); border: 1px solid var(--grape-100); border-left: 4px solid var(--grape-500); border-radius: var(--radius-md); padding: 18px 20px; margin: 6px 0 0; }
+  .pp-callout p { margin: 0; color: var(--ink-700); font-weight: 600; }
+
+  /* language switch — driven by [data-pp] on <html>, kept in sync with the nav picker */
+  html[data-pp="cs"] [data-lang-content="en"],
+  html[data-pp="en"] [data-lang-content="cs"] { display: none; }
+
+  @media (max-width: 560px) { .pp-summary { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     Icon sprite — subset used by this page.
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-audio-lines" viewBox="0 0 24 24"><path d="M4 10v4M8 6.5v11M12 9v6M16 4.5v15M20 10v4" /></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-width="2.6" /></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" /></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none" /></symbol>
+  <symbol id="i-wifi-off" viewBox="0 0 24 24">
+    <path d="M3 3l18 18" />
+    <path d="M8.5 15.2a5 5 0 0 1 6.8-.4" />
+    <path d="M5 11.6a11 11 0 0 1 3.4-2.2M13.5 8.6a11 11 0 0 1 5.9 3" />
+    <circle cx="12" cy="18.6" r="1.1" fill="currentColor" stroke="none" />
+  </symbol>
+  <symbol id="i-library" viewBox="0 0 24 24">
+    <rect x="4" y="4" width="3.4" height="16" rx="1" />
+    <rect x="9" y="4" width="3.4" height="16" rx="1" />
+    <rect x="14.2" y="5" width="3.4" height="15" rx="1" transform="rotate(10 15.9 12.5)" />
+  </symbol>
+  <symbol id="i-monitor-smartphone" viewBox="0 0 24 24">
+    <rect x="2.5" y="4.5" width="12.5" height="9" rx="1.6" />
+    <path d="M6.5 17.5h4.5" />
+    <rect x="15" y="9" width="6.5" height="11" rx="1.6" />
+  </symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 7.8-7 9-4-1.2-7-4.4-7-9V6z" /><path d="M9 12l2 2 4-4" /></symbol>
+  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v4h4" /><path d="M9 13h6M9 16h6M9 10h2" /></symbol>
+</defs></svg>
+
+<!-- ============================================================ NAV ============================================================ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html" aria-label="JukeNFC home">
+      <img src="assets/logo-mark.svg" width="40" height="40" alt="" />
+      <span class="logo-word"><span class="j">Juke</span><span class="n">NFC</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#how" data-i18n="nav.how">How it works</a>
+      <a href="index.html#private" data-i18n="nav.private">Private by design</a>
+      <a href="index.html#use" data-i18n="nav.use">Use cases</a>
+      <a href="index.html#features" data-i18n="nav.features">Features</a>
+    </div>
+    <div class="nav-actions">
+      <span class="badge badge-mint"><span class="dot"></span><span data-i18n="nav.android">Android</span></span>
+      <div class="lang" data-lang-picker>
+        <button type="button" class="lang-btn" data-lang-toggle aria-haspopup="true" aria-label="Language">
+          <svg class="ico" width="15" height="15" style="color:var(--grape-500)"><use href="#i-audio-lines" /></svg>
+          <span data-lang-label>EN</span>
+          <svg class="ico chev" width="14" height="14"><use href="#i-chevron-down" /></svg>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button type="button" class="lang-opt" data-lang="en" role="menuitem">
+            <span class="left"><span class="code">EN</span>English</span>
+            <svg class="ico check" width="16" height="16"><use href="#i-check" /></svg>
+          </button>
+          <button type="button" class="lang-opt" data-lang="cs" role="menuitem">
+            <span class="left"><span class="code">CS</span>Čeština</span>
+            <svg class="ico check" width="16" height="16"><use href="#i-check" /></svg>
+          </button>
+        </div>
+      </div>
+      <a class="btn btn-sm btn-grape" href="https://play.google.com/store/apps/details?id=cz.chytredigital.jukenfc" target="_blank" rel="noopener noreferrer">
+        <svg class="ico" width="16" height="16"><use href="#i-play" /></svg>
+        <span data-i18n="nav.getApp">Get the app</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================ CZECH ============================================================ -->
+<main data-lang-content="cs">
+  <header class="pp-hero">
+    <div class="blob" style="width:420px;height:420px;background:var(--grape-300);opacity:.22;filter:blur(70px);top:-160px;right:-100px"></div>
+    <div class="blob" style="width:360px;height:360px;background:var(--sunshine-300);opacity:.28;filter:blur(70px);bottom:-200px;left:-120px"></div>
+    <div class="inner">
+      <span class="eyebrow-pill">
+        <svg class="ico" width="16" height="16"><use href="#i-file-text" /></svg>
+        <span>Právní</span>
+      </span>
+      <h1>Podmínky použití</h1>
+      <p class="sub">Jednoduchá pravidla pro používání aplikace JukeNFC. Krátce: je zdarma, běží ve vašem zařízení a poskytujeme ji „tak, jak je“.</p>
+      <span class="pp-updated">
+        <svg class="ico" width="14" height="14"><use href="#i-file-text" /></svg>
+        Naposledy aktualizováno 18. června 2026
+      </span>
+    </div>
+  </header>
+
+  <section class="pp-summary">
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-play" /></svg></span>
+      <div><h3>Zdarma k použití</h3><p>Aplikaci poskytujeme bezplatně pro osobní i komerční použití.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-library" /></svg></span>
+      <div><h3>Váš obsah zůstává váš</h3><p>Za zvuky, které importujete, a práva k nim odpovídáte vy.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-shield" /></svg></span>
+      <div><h3>Poskytováno „tak, jak je“</h3><p>Bez záruk; aplikaci používáte na vlastní riziko.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-monitor-smartphone" /></svg></span>
+      <div><h3>Osobní i komerční</h3><p>Klidně i v kiosku nebo na akci — používání je na vás.</p></div>
+    </div>
+  </section>
+
+  <div class="pp-body">
+    <div class="pp-section">
+      <h2>1. Přijetí podmínek</h2>
+      <p>Tyto podmínky použití upravují používání mobilní aplikace JukeNFC („aplikace“, identifikátor <strong>cz.chytredigital.jukenfc</strong>), kterou vyvíjí Chytré Digital. Stažením nebo používáním aplikace s těmito podmínkami souhlasíte. Pokud s nimi nesouhlasíte, aplikaci prosím nepoužívejte.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>2. Licence k používání</h2>
+      <p>Aplikaci poskytujeme zdarma. Udělujeme vám nevýhradní, nepřenosné a kdykoli odvolatelné právo používat aplikaci na vašich zařízeních pro osobní i komerční účely (např. v režimu kiosku nebo na akci). Aplikaci nesmíte zpětně analyzovat, dekompilovat ani z ní odvozovat zdrojový kód nad rámec toho, co výslovně umožňují právní předpisy.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>3. Váš obsah</h2>
+      <p>Zvukové soubory, které do aplikace importujete, zůstávají vaše. Nesete odpovědnost za to, že máte práva tyto soubory používat (např. autorská práva k hudbě či nahrávkám). Aplikace soubory ukládá pouze lokálně ve vašem zařízení — podrobnosti najdete v <a href="privacy.html">Zásadách ochrany soukromí</a>.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>4. Přijatelné používání</h2>
+      <p>Aplikaci nesmíte používat k nezákonným účelům ani způsobem, který porušuje práva třetích stran. Sami zodpovídáte za obsah, který přehráváte, a za soulad s místními předpisy (například ohledně hlasitosti nebo veřejného přehrávání).</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>5. Dostupnost a aktualizace</h2>
+      <p>Aplikaci můžeme kdykoli aktualizovat, měnit nebo přestat poskytovat. Některé aktualizace mohou být pro další používání vyžadovány a jsou distribuovány prostřednictvím obchodu Google Play.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>6. Bez záruky</h2>
+      <div class="pp-callout"><p>Aplikace je poskytována „tak, jak je“ a „jak je dostupná“, bez jakýchkoli výslovných či předpokládaných záruk. Nezaručujeme, že bude bezchybná, nepřetržitě dostupná nebo že bude fungovat s každým NFC tagem či zařízením.</p></div>
+    </div>
+
+    <div class="pp-section">
+      <h2>7. Omezení odpovědnosti</h2>
+      <p>V maximálním rozsahu povoleném zákonem neneseme odpovědnost za nepřímé, náhodné nebo následné škody vzniklé v souvislosti s používáním aplikace, včetně ztráty dat. Aplikaci používáte na vlastní riziko.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>8. Změny podmínek</h2>
+      <p>Tyto podmínky můžeme čas od času aktualizovat. Aktuální verze bude vždy dostupná na této adrese a změníme datum „Naposledy aktualizováno“ uvedené výše.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>9. Rozhodné právo</h2>
+      <p>Tyto podmínky se řídí právním řádem České republiky.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>10. Kontakt</h2>
+      <p>Dotazy k těmto podmínkám pište na <a href="mailto:kuba.devera@seznam.cz">kuba.devera@seznam.cz</a>.</p>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================ ENGLISH ============================================================ -->
+<main data-lang-content="en">
+  <header class="pp-hero">
+    <div class="blob" style="width:420px;height:420px;background:var(--grape-300);opacity:.22;filter:blur(70px);top:-160px;right:-100px"></div>
+    <div class="blob" style="width:360px;height:360px;background:var(--sunshine-300);opacity:.28;filter:blur(70px);bottom:-200px;left:-120px"></div>
+    <div class="inner">
+      <span class="eyebrow-pill">
+        <svg class="ico" width="16" height="16"><use href="#i-file-text" /></svg>
+        <span>Legal</span>
+      </span>
+      <h1>Terms of Use</h1>
+      <p class="sub">Simple rules for using JukeNFC. In short: it’s free, it runs on your device, and it’s provided “as is”.</p>
+      <span class="pp-updated">
+        <svg class="ico" width="14" height="14"><use href="#i-file-text" /></svg>
+        Last updated 18 June 2026
+      </span>
+    </div>
+  </header>
+
+  <section class="pp-summary">
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-play" /></svg></span>
+      <div><h3>Free to use</h3><p>We provide the app free of charge for personal and commercial use.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-library" /></svg></span>
+      <div><h3>Your content stays yours</h3><p>You’re responsible for the sounds you import and the rights to them.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-shield" /></svg></span>
+      <div><h3>Provided “as is”</h3><p>No warranties; you use the app at your own risk.</p></div>
+    </div>
+    <div class="pp-sum">
+      <span class="ico-chip"><svg class="ico" width="22" height="22"><use href="#i-monitor-smartphone" /></svg></span>
+      <div><h3>Personal &amp; commercial</h3><p>Kiosks and events are fine — how you use it is up to you.</p></div>
+    </div>
+  </section>
+
+  <div class="pp-body">
+    <div class="pp-section">
+      <h2>1. Acceptance of terms</h2>
+      <p>These terms of use govern your use of the JukeNFC mobile app (“the app”, identifier <strong>cz.chytredigital.jukenfc</strong>), developed by Chytré Digital. By downloading or using the app you agree to these terms. If you do not agree, please do not use the app.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>2. Licence to use</h2>
+      <p>We provide the app free of charge. We grant you a non-exclusive, non-transferable and revocable right to use the app on your devices for personal and commercial purposes (e.g. in kiosk mode or at an event). You may not reverse-engineer, decompile or derive the source code of the app beyond what applicable law expressly permits.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>3. Your content</h2>
+      <p>The audio files you import into the app remain yours. You are responsible for having the rights to use those files (e.g. copyright in music or recordings). The app stores files only locally on your device — see the <a href="privacy.html">Privacy Policy</a> for details.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>4. Acceptable use</h2>
+      <p>You must not use the app for unlawful purposes or in a way that infringes the rights of third parties. You are solely responsible for the content you play and for complying with local rules (for example regarding volume or public playback).</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>5. Availability and updates</h2>
+      <p>We may update, change or discontinue the app at any time. Some updates may be required for continued use and are distributed through the Google Play Store.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>6. No warranty</h2>
+      <div class="pp-callout"><p>The app is provided “as is” and “as available”, without any express or implied warranties. We do not guarantee that it will be error-free, continuously available, or that it will work with every NFC tag or device.</p></div>
+    </div>
+
+    <div class="pp-section">
+      <h2>7. Limitation of liability</h2>
+      <p>To the maximum extent permitted by law, we are not liable for any indirect, incidental or consequential damages arising from your use of the app, including loss of data. You use the app at your own risk.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>8. Changes to these terms</h2>
+      <p>We may update these terms from time to time. The current version will always be available at this address, and we’ll update the “Last updated” date shown above.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>9. Governing law</h2>
+      <p>These terms are governed by the laws of the Czech Republic.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2>10. Contact</h2>
+      <p>For questions about these terms, email us at <a href="mailto:kuba.devera@seznam.cz">kuba.devera@seznam.cz</a>.</p>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================ FOOTER ============================================================ -->
+<footer class="footer">
+  <div class="cols">
+    <div>
+      <a class="logo" href="index.html" aria-label="JukeNFC home">
+        <img src="assets/logo-mark.svg" width="40" height="40" alt="" />
+        <span class="logo-word"><span style="color:#fff">Juke</span><span style="color:var(--grape-300)">NFC</span></span>
+      </a>
+      <p class="tagline" data-i18n="footer.tagline">The mobile NFC jukebox. Tap a card, hear a sound — no extra hardware.</p>
+    </div>
+    <div class="col">
+      <div class="col-h" data-i18n="footer.cols.0.0">Product</div>
+      <a href="index.html#how" data-i18n="footer.cols.0.1.0">How it works</a>
+      <a href="index.html#private" data-i18n="footer.cols.0.1.1">Private by design</a>
+      <a href="index.html#use" data-i18n="footer.cols.0.1.2">Use cases</a>
+      <a href="index.html#features" data-i18n="footer.cols.0.1.3">Features</a>
+      <a href="https://play.google.com/store/apps/details?id=cz.chytredigital.jukenfc" target="_blank" rel="noopener noreferrer" data-i18n="footer.cols.0.1.4">Download</a>
+    </div>
+    <div class="col">
+      <div class="col-h" data-i18n="footer.cols.1.0">Support</div>
+      <a href="index.html#how" data-i18n="footer.cols.1.1.0">Help</a>
+      <a href="index.html#features" data-i18n="footer.cols.1.1.1">FAQ</a>
+      <a href="mailto:kuba.devera@seznam.cz" data-i18n="footer.cols.1.1.2">Contact</a>
+    </div>
+    <div class="col">
+      <div class="col-h" data-i18n="footer.cols.2.0">Legal</div>
+      <a href="privacy.html" data-i18n="footer.cols.2.1.0">Privacy</a>
+      <a href="terms.html" data-i18n="footer.cols.2.1.1">Terms</a>
+    </div>
+  </div>
+  <div class="bottom">
+    <span data-i18n="footer.copyright">© 2026 JukeNFC. Made for tappers everywhere.</span>
+    <span class="offline"><svg class="ico" width="15" height="15"><use href="#i-wifi-off" /></svg><span data-i18n="footer.offline">Works fully offline</span></span>
+  </div>
+</footer>
+
+<script src="js/strings.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* Keep the legal-page body language in sync with the shared nav picker.
+   js/app.js handles the nav/footer strings, the dropdown and persistence
+   (localStorage key "jukenfc_lang"); here we only flip the <html data-pp>
+   attribute that shows the matching CS / EN content. */
+(function () {
+  'use strict';
+  var KEY = 'jukenfc_lang', DEFAULT = 'en';
+  function setLang(lang) {
+    if (lang !== 'cs' && lang !== 'en') lang = DEFAULT;
+    document.documentElement.setAttribute('data-pp', lang);
+  }
+  function init() {
+    var lang = DEFAULT;
+    try { lang = localStorage.getItem(KEY) || DEFAULT; } catch (e) {}
+    setLang(lang);
+    document.querySelectorAll('[data-lang]').forEach(function (opt) {
+      opt.addEventListener('click', function () { setLang(opt.getAttribute('data-lang')); });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
