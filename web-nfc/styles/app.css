@@ -5,7 +5,7 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 
 body {
   margin: 0;
@@ -522,6 +522,16 @@ img { display: block; }
   .grid-3, .grid-3-cases, .grid-4, .pillars, .sound-grid, .footer .cols { grid-template-columns: 1fr; }
   .hero-art { display: none; }
   .hero-grid { padding-top: 40px; }
+  /* keep the nav from overflowing on phones: drop the decorative Android badge
+     and collapse the "Get the app" button to an icon so the language picker
+     stays visible in both languages (Czech labels are longer) */
+  .nav-inner { gap: 10px; padding: 12px 16px; }
+  .logo-word { font-size: 21px; }
+  .nav-actions { gap: 8px; }
+  .nav-actions .badge { display: none; }
+  .lang-btn { padding: 8px 10px; font-size: 13px; }
+  .nav-actions .btn-grape { padding: 9px 11px; }
+  .nav-actions .btn-grape span { display: none; }
 }
 
 /* ---- respect reduced motion ---- */
