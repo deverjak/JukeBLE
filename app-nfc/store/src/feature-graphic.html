@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+
+  /* Google Play feature graphic — exactly 1024×500 */
+  .fg {
+    position: relative; width: 1024px; height: 500px; overflow: hidden;
+    background: radial-gradient(130% 150% at 0% 0%, #34227f 0%, #1c1830 52%, #15121f 100%);
+    font-family: 'Nunito', system-ui, sans-serif;
+  }
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+  .b1 { width: 460px; height: 460px; background: #6c4cf1; opacity: .40; filter: blur(95px); top: -170px; left: -110px; }
+  .b2 { width: 380px; height: 380px; background: #1fc8a9; opacity: .16; filter: blur(95px); bottom: -180px; left: 420px; }
+  .b3 { width: 360px; height: 360px; background: #ffc23d; opacity: .14; filter: blur(90px); top: -60px; right: -60px; }
+
+  .left { position: absolute; left: 72px; top: 0; height: 100%; width: 600px; display: flex; flex-direction: column; justify-content: center; }
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .brand .word { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; }
+  .brand .word .j { color: #fff; } .brand .word .n { color: #ab93ff; }
+
+  h1 { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 66px; line-height: 0.98; letter-spacing: -0.025em; color: #fff; margin: 0; }
+  h1 .accent { color: #ffd45c; }
+  .sub { font-size: 22px; line-height: 1.45; font-weight: 600; color: rgba(255,255,255,0.82); margin: 20px 0 0; max-width: 470px; }
+  .pill { display: inline-flex; align-items: center; gap: 9px; margin-top: 26px; padding: 9px 16px; width: fit-content;
+          background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 999px;
+          font-family: 'Baloo 2', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: #e6ddff; }
+  .pill .dot { width: 9px; height: 9px; border-radius: 50%; background: #41dcc0; }
+
+  /* floating sound tiles */
+  .float { position: absolute; width: 168px; background: #241e3a; border: 1px solid rgba(255,255,255,0.09);
+           border-radius: 26px; padding: 13px; box-shadow: 0 26px 55px rgba(0,0,0,0.5); }
+  .face { aspect-ratio: 1/1; border-radius: 18px; display: flex; align-items: center; justify-content: center;
+          color: #fff; box-shadow: inset 0 -9px 18px rgba(0,0,0,0.18); }
+  .face svg { width: 58px; height: 58px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .meta { padding: 11px 5px 3px; }
+  .name { font-family: 'Baloo 2', sans-serif; font-weight: 600; font-size: 18px; color: #fff; }
+  .file { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700; color: #9a90b6; margin-top: 2px; }
+
+  .f1 { top: 46px;  right: 250px; transform: rotate(-6deg); }
+  .f2 { top: 158px; right: 70px;  transform: rotate(5deg); }
+  .f3 { top: 250px; right: 286px; transform: rotate(-3deg); }
+  .bg-sun { background: #ffc23d; } .bg-sky { background: #3da5ff; } .bg-pink { background: #ff6fb5; }
+</style>
+</head>
+<body>
+<div class="fg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <div class="left">
+    <div class="brand">
+      <svg width="46" height="46" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="c" x1="20" y1="16" x2="96" y2="104" gradientUnits="userSpaceOnUse"><stop stop-color="#8b6bf8"/><stop offset="1" stop-color="#6c4cf1"/></linearGradient></defs>
+        <rect x="20" y="20" width="68" height="84" rx="18" transform="rotate(-7 54 62)" fill="url(#c)"/>
+        <path d="M44 47l21 14-21 14z" transform="rotate(-7 54 62)" fill="#fff"/>
+        <g stroke="#ffc23d" stroke-width="6" stroke-linecap="round" fill="none"><path d="M92 44a18 18 0 0 1 0 34"/><path d="M101 34a32 32 0 0 1 0 54"/></g>
+      </svg>
+      <span class="word"><span class="j">Juke</span><span class="n">NFC</span></span>
+    </div>
+
+    <h1>Přilož kartu.<br /><span class="accent">Ozve se zvuk.</span></h1>
+    <p class="sub">Mobilní NFC jukebox — přiřaď kartě vlastní zvuk a stačí přiložit.</p>
+    <span class="pill"><span class="dot"></span>Android · Offline · Bez účtu</span>
+  </div>
+
+  <!-- Lev -->
+  <div class="float f1">
+    <div class="face bg-sun">
+      <svg viewBox="0 0 24 24"><path d="M5.5 4l3.6 2.2-1 3.4z" fill="currentColor" stroke="none"/><path d="M18.5 4l-3.6 2.2 1 3.4z" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="6.4"/><circle cx="9.8" cy="12" r=".95" fill="currentColor" stroke="none"/><circle cx="14.2" cy="12" r=".95" fill="currentColor" stroke="none"/><path d="M12 14v1.4M12 15.4l-1.2.9M12 15.4l1.2.9"/><path d="M5.4 13.4l-2.4.3M5.4 14.7l-2.2 1M18.6 13.4l2.4.3M18.6 14.7l2.2 1"/></svg>
+    </div>
+    <div class="meta"><div class="name">Lev</div><div class="file">♪ lev.mp3</div></div>
+  </div>
+  <!-- Buben -->
+  <div class="float f2">
+    <div class="face bg-sky">
+      <svg viewBox="0 0 24 24"><ellipse cx="12" cy="10" rx="7" ry="2.6"/><path d="M5 10v4.5c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V10"/><path d="M8.5 7.5L5 3M15.5 7.5L19 3"/><circle cx="4.6" cy="2.7" r="1" fill="currentColor" stroke="none"/><circle cx="19.4" cy="2.7" r="1" fill="currentColor" stroke="none"/></svg>
+    </div>
+    <div class="meta"><div class="name">Buben</div><div class="file">♪ buben.wav</div></div>
+  </div>
+  <!-- Zvonek -->
+  <div class="float f3">
+    <div class="face bg-pink">
+      <svg viewBox="0 0 24 24"><path d="M6 16a6 6 0 0 1 1.3-3.7L8 11V9a4 4 0 0 1 8 0v2l.7 1.3A6 6 0 0 1 18 16z"/><path d="M5 16h14"/><path d="M10.4 19a1.7 1.7 0 0 0 3.2 0"/></svg>
+    </div>
+    <div class="meta"><div class="name">Zvonek</div><div class="file">♪ zvonek.m4a</div></div>
+  </div>
+</div>
+</body></html>

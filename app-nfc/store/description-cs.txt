@@ -1,0 +1,47 @@
+================================================================
+JukeNFC — Google Play (čeština)
+================================================================
+
+----------------------------------------------------------------
+STRUČNÝ POPIS  (Short description — max 80 znaků)
+----------------------------------------------------------------
+Přilož kartu, ozve se zvuk. Vlastní soubory, plně offline, bez účtu.
+
+(68 znaků)
+
+
+----------------------------------------------------------------
+ÚPLNÝ POPIS  (Full description — max 4000 znaků)
+----------------------------------------------------------------
+JukeNFC promění váš telefon ve zvukový panel na dotek. Přiřaďte libovolné NFC kartě zvuk z vlastních souborů — a pak už stačí jen přiložit kartu a ozve se. Žádný hardware navíc, žádný internet, žádný účet.
+
+JAK TO FUNGUJE
+1) Zaregistrujte kartu — přepněte do režimu registrace a přiložte NFC kartu k zadní straně telefonu. JukeNFC načte její jedinečné ID.
+2) Přiřaďte zvuk — vyberte zvukový soubor z telefonu (MP3, WAV nebo M4A). Zkopíruje se do aplikace a uloží se lokálně.
+3) Přiložte a hrajte — přepněte do režimu přehrávání. Každé přiložení karty přehraje její zvuk. Přiložíte jinou kartu a první se zastaví.
+
+PRO KOHO A NA CO
+• Děti a učení — kartička se zvířátkem přehraje zvuk zvířete; kartičky, které mluví, zpívají a počítají.
+• Přístupnost — komunikační tabule, kde fyzické karty spouští namluvené fráze.
+• Akce a kiosky — telefon v režimu kiosku; návštěvníci přikládají karty u exponátů a stánků.
+• Stolní hry — karty postav nebo předmětů, které u stolu přehrají tematické zvuky.
+• Zvukové panely — rychlé fyzické spouštění efektů, znělek a hlášek na povel.
+• …a cokoli dalšího vymyslíte. Jakákoli karta, jakýkoli zvuk.
+
+FUNKCE
+• Využívá NFC anténu telefonu — žádná externí čtečka.
+• Vlastní knihovna zvuků — import MP3, WAV i M4A, vše uloženo lokálně.
+• Dva jasné režimy — registrace a přehrávání, s pojistkou proti omylu.
+• Okamžité přehrání — nové přiložení zastaví aktuální zvuk a spustí další, vždy jen jeden zvuk.
+• Přehrávání na pozadí i na zamykací obrazovce, s ovládáním médií a názvem zvuku.
+• Vhodné pro kiosk — drží obrazovku rozsvícenou a samo obnoví poslouchání.
+• Plně offline — žádný server, jen lokální databáze a soubory.
+• Živý stav čtečky — na první pohled vidíte, zda NFC poslouchá, je připravené, vypnuté nebo nepodporované.
+
+SOUKROMÍ V ZÁKLADU
+Všechno zůstává ve vašem telefonu. JukeNFC neshromažďuje žádné osobní údaje, nemá uživatelské účty, nepoužívá analytiku ani reklamy a vaše data nikam neodesílá. Karty, zvuky i nastavení leží v lokální databázi přímo v zařízení.
+
+POZNÁMKA
+Aplikace je určená pro telefony s Androidem a NFC. Funguje s běžnými NFC kartami a štítky — čte jejich jedinečné ID (UID), nezapisuje na ně a nečte jejich další obsah. iOS není podporován, protože neumí NFC poslouchat průběžně.
+
+Přilož kartu, ozve se zvuk. Stáhněte JukeNFC a proměňte jakoukoli kartu ve zvuk.
